@@ -55,10 +55,33 @@ nav{display:flex;gap:8px;margin-bottom:14px}nav button{background:var(--card);co
 (async()=>{
 const $=s=>document.querySelector(s),show=(e,v)=>e.classList.toggle('hide',!v);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let db=null,user=null;
-try{db=await claude.use('db');user=await claude.use('user')}catch(e){}
-if(!db||!user){const m=$('#msg');show(m,true);m.textContent='Please open this page signed in to Claude to join or manage the event.';return}
-const me=await user.id(),owner=user.isOwner();
+
+let db = null;
+try {
+  db = await claude.use('db');
+} catch (e) {}
+
+if (!db) {
+  const m = $('#msg');
+  show(m, true);
+  m.textContent = 'Database unavailable. Please try again.';
+  return;
+}
+
+// Use a persistent anonymous ID for this browser
+let me = localStorage.getItem('dandiya_user_id');
+if (!me) {
+  me = 'guest_' + (
+    crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now() + '_' + Math.random().toString(36).slice(2)
+  );
+  localStorage.setItem('dandiya_user_id', me);
+}
+
+// Admin access must be configured separately
+const owner = false;
+
 let profiles={},contacts={},likes={},mine=null,tab='matches';
 const ua=navigator.userAgent,dev=(/Mobi|Android|iPhone/.test(ua)?'Mobile':'Desktop')+' · '+(/Edg/.test(ua)?'Edge':/Chrome/.test(ua)?'Chrome':/Safari/.test(ua)?'Safari':/Firefox/.test(ua)?'Firefox':'Browser');
 const col=(n,fn)=>db.collection(n).onSnapshot(s=>{const o={};s.docs.forEach(d=>{if(d.exists!==false)o[d.id]=d.data()});fn(o);render()},()=>{});
