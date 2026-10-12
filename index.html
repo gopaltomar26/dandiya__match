@@ -7,7 +7,7 @@
 :root{--bg:#1c120d;--card:#2a1b14;--line:#4a3125;--or:#ff8a3d;--tx:#f5e9df;--mu:#b9a394;--wm:none}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;padding:20px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text}@media print{body{display:none!important}}
-main{max-width:640px;margin:auto}h2{margin:0 0 8px}
+main{max-width:640px;margin:auto;padding-bottom:110px}h2{margin:0 0 8px}
 .logo{display:flex;align-items:center;gap:8px;font-weight:400;line-height:1.1;margin:0}
 .logo span{font-family:'Great Vibes','Brush Script MT','Segoe Script',cursive;font-size:52px;padding:2px 6px 6px 0;background:linear-gradient(90deg,#ff8a3d,#ff4d8d 55%,#ffd93d);-webkit-background-clip:text;background-clip:text;color:transparent}
 .stick{flex:none;filter:drop-shadow(0 2px 6px #ff8a3d55)}p.sub{color:var(--mu);margin:4px 0 16px}
@@ -33,8 +33,12 @@ label.mu{display:block;margin-top:14px}
 .vact{position:sticky;bottom:12px;margin-top:6px}.vact button{padding:14px;font-size:16px;border-radius:999px}.vact button.s{background:var(--bg)}
 #pedit{width:140px;height:140px;border-radius:14px;background:#1c120d;border:1px solid var(--line);flex:none}
 .m{max-width:80%;padding:8px 12px;border-radius:14px;background:#3a261c;align-self:flex-start;word-break:break-word}.m.me{align-self:flex-end;background:var(--or);color:#1c120d}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card);border:1px solid var(--or);color:var(--tx);padding:12px 18px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--card);border:1px solid var(--or);color:var(--tx);padding:12px 18px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center}
 body.shield .hero,body.shield .av{filter:blur(40px)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(100%,640px);z-index:30;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:#140c08;border-top:1px solid var(--line)}
+.nav button{position:relative;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:8px 2px;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav button i{font-style:normal;font-size:20px}.nav button.on{background:var(--or);color:#1c120d;border-color:var(--or)}
+.bdg{position:absolute;top:2px;right:8px;background:#ff3d8b;color:#fff;border-radius:999px;font-size:10px;padding:1px 6px}
 .hide{display:none}
 </style></head><body><main>
 <h1 class="logo"><svg class="stick" viewBox="0 0 64 64" width="58" height="58" aria-hidden="true">
@@ -72,9 +76,10 @@ body.shield .hero,body.shield .av{filter:blur(40px)}
   <label class="mu">I am</label><div id="gender"></div>
   <p class="mu" style="font-size:12px;margin:4px 0 0">You will only see people of the opposite gender.</p>
   <label class="mu">Height (cm)</label><input id="height" type="number" inputmode="numeric" min="120" max="230" placeholder="e.g. 170">
-  <label class="mu">📍 Current location</label>
-  <div class="row"><button type="button" class="s" id="locbtn">Use my current location</button><span class="mu" id="locst"></span></div>
-  <p class="mu" style="font-size:12px;margin:4px 0 0">Used to show people near you. Others only see an approximate distance, never your exact spot.</p>
+  <label class="mu">📍 Your location (area, city)</label>
+  <div class="row"><input id="place" maxlength="80" placeholder="e.g. Indirapuram, Ghaziabad" autocomplete="off"><button type="button" class="s" id="locbtn" style="flex:none">Check</button></div>
+  <div class="mu" id="locst"></div>
+  <p class="mu" style="font-size:12px;margin:4px 0 0">Used only to show people near you. Others see just an approximate distance, never your area.</p>
 
   <label class="mu">About me — write at least 2 lines</label>
   <textarea id="about" rows="4" maxlength="500" placeholder="Line 1: who you are and what you do&#10;Line 2: what makes you fun on a dandiya night"></textarea>
@@ -93,13 +98,15 @@ body.shield .hero,body.shield .av{filter:blur(40px)}
   <p class="err" id="perr"></p><div class="row"><button id="pbtn">Save &amp; find matches</button><button class="s hide" id="pcancel">Cancel</button></div>
 </section>
 
-<section id="main" class="hide">
-  <div class="card"><div class="row"><b id="hi"></b><button class="s" id="edit" style="flex:none">Edit profile</button><button class="s" id="logout" style="flex:none">Log out</button></div>
-    <div class="row" style="margin-top:8px"><input id="minA" type="number" placeholder="Min age"><input id="maxA" type="number" placeholder="Max age"><select id="radius"><option value="7">Within 7 km</option><option value="15">Within 15 km</option><option value="30">Within 30 km</option><option value="50">Within 50 km</option></select></div></div>
-  <div class="card hide" id="rbox"><b>💌 Dandiya requests</b><div id="reqs"></div></div>
-  <div class="card hide" id="mbox"><b>💬 Your matches</b><div id="matches"></div></div>
-  <div class="card"><b>People here</b> <span class="mu">(most in common first)</span><div id="people"></div></div>
+<section id="s-discover" class="hide">
+  <h2>🧭 Discover</h2>
+  <div class="card"><div class="row"><input id="minA" type="number" placeholder="Min age"><input id="maxA" type="number" placeholder="Max age"><select id="radius"><option value="7">Within 7 km</option><option value="15">Within 15 km</option><option value="30">Within 30 km</option><option value="50">Within 50 km</option></select></div></div>
+  <div class="card"><b>People near you</b> <span class="mu">(best matches first — tap a person to see their profile)</span><div id="people"></div></div>
 </section>
+<section id="s-likes" class="hide"><h2>💌 Likes you</h2><p class="mu">People who want to dandiya with you. Approve to start chatting.</p><div class="card" id="reqs"></div></section>
+<section id="s-matches" class="hide"><h2>💬 Matches</h2><p class="mu">People you both approved. Tap Chat to talk.</p><div class="card" id="matches"></div></section>
+<section id="s-me" class="hide"><h2>👤 Profile</h2><div id="meview"></div>
+  <div class="row"><button id="edit">✏️ Edit profile</button><button class="s" id="logout">Log out</button></div></section>
 
 <section id="view" class="hide">
   <div class="row" style="margin-bottom:10px"><button class="s" id="vback" style="flex:none">← Back</button><span class="mu" id="vcount" style="text-align:right"></span></div>
@@ -119,15 +126,24 @@ body.shield .hero,body.shield .av{filter:blur(40px)}
   <div class="card hide" id="adash"><div class="row"><div><b id="tot"></b><div class="mu">total</div></div><div><b id="onl" style="color:#4ade80"></b><div class="mu">online now</div></div></div>
   <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Age</th><th>Email</th><th>Phone</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></div>
 </section>
-</main><div id="toast"></div>
+</main>
+<nav id="nav" class="nav hide">
+  <button data-t="discover"><i>🧭</i>Discover</button>
+  <button data-t="likes"><i>💌</i>Likes you<span class="bdg hide" id="bl"></span></button>
+  <button data-t="matches"><i>💬</i>Matches<span class="bdg hide" id="bm"></span></button>
+  <button data-t="me"><i>👤</i>Profile</button>
+</nav><div id="toast"></div>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function api(a,body,q=''){const h={'x-token':localStorage.dm_token||''};if(body)h['Content-Type']='application/json';
   const r=await fetch('/api/'+a+q,{method:body?'POST':'GET',headers:h,body:body?JSON.stringify(body):undefined});
   const d=await r.json().catch(()=>({error:'Server error'}));if(!r.ok)throw new Error(d.error||'Error');return d}
-const show=id=>['join','auth','profile','main','view','chat','admin'].forEach(x=>$('#'+x).classList.toggle('hide',x!==id));
+const TABS=['discover','likes','matches','me'],ALL=['join','auth','profile',...TABS,'view','chat','admin'];
+function show(id){ALL.forEach(x=>$('#'+(TABS.includes(x)?'s-'+x:x)).classList.toggle('hide',x!==id));
+  $('#nav').classList.toggle('hide',!TABS.includes(id));
+  document.querySelectorAll('#nav [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===id))}
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,4000)}
-let data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[],chatWith=null,chatTimer,lastCount=-1,prevReq=-1,reg=null,ticket='',otpSent=false,loginMode=false,synced=false,radius=+localStorage.dm_r||7;
+let data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[],chatWith=null,chatTimer,lastCount=-1,prevReq=-1,reg=null,ticket='',otpSent=false,loginMode=false,tab='discover',radius=+localStorage.dm_r||7;
 
 // ---- Step 1: name, age, phone
 $('#phone').oninput=e=>{let v=e.target.value.replace(/\D/g,'');if(v.length>10&&v.startsWith('91'))v=v.slice(2);e.target.value=v.slice(0,10)};
@@ -163,7 +179,7 @@ $('#em').onkeydown=$('#otp').onkeydown=e=>{if(e.key==='Enter')$('#ubtn').click()
 $('#resend').onclick=e=>{e.preventDefault();$('#em').readOnly=false;sendOtp()};
 $('#chg').onclick=e=>{e.preventDefault();resetAuth()};
 $('#aback').onclick=()=>show('join');
-$('#logout').onclick=async()=>{try{await api('logout',{})}catch(e){}localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;data=null;reg=null;ticket='';synced=false;show('join')};
+$('#logout').onclick=async()=>{try{await api('logout',{})}catch(e){}localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;data=null;reg=null;ticket='';tab='discover';show('join')};
 
 // ---- Step 3: photo, about, hobbies, partner type
 const HOBG={'Dance & music':['Dandiya / Garba','Bollywood dance','Classical dance','Singing','Playing an instrument','Live concerts'],
@@ -176,7 +192,6 @@ const LOOK=['Dandiya partner for the night','New friends','Something serious'];
 const OPEN=['Dating','One-night stay','Coffee or dinner meetup','Practice dandiya together'];
 const TR=['Fun & energetic','Great dancer','Caring','Funny','Adventurous','Traditional values','Modern outlook','Ambitious','Calm & polite','Honest','Good listener','Family-oriented','Spiritual','Foodie','Stylish','Respectful','Independent','Romantic','Confident','Emotionally mature'];
 const sel={hobbies:new Set(),traits:new Set(),open:new Set(),looking:'',gender:'',level:'',diet:''};
-let loc=null;
 const chip=(x,on,k,dis=false)=>`<button type="button" class="chip ${on?'on':''}" data-k="${k}" data-v="${esc(x)}" ${dis?'disabled':''}>${esc(x)}</button>`;
 function chips(){const locked=!!(data&&data.me&&data.me.gender);
   $('#gender').innerHTML=GEN.map(x=>chip(x,sel.gender===x,'g',locked&&sel.gender!==x)).join('')+(locked?' <span class="mu">(can\u2019t be changed)</span>':'');
@@ -194,28 +209,26 @@ $('#hobx').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const v=e.target
 const aboutLines=()=>$('#about').value.split('\n').map(x=>x.trim()).filter(x=>x.length>=8);
 function aboutHint(){const n=aboutLines().length;$('#aboutc').textContent=n>=2?'✓ Looks good':n+'/2 lines — press Enter for a new line (each line at least 8 characters)'}
 $('#about').oninput=aboutHint;
-function getLoc(){return new Promise((ok,no)=>{if(!navigator.geolocation)return no(new Error('Location is not supported on this device'));
-  navigator.geolocation.getCurrentPosition(p=>ok({lat:+p.coords.latitude.toFixed(3),lng:+p.coords.longitude.toFixed(3)}),
-    ()=>no(new Error('Please allow location access in your browser so we can find people near you')),{timeout:15000,maximumAge:60000})})}
-$('#locbtn').onclick=async()=>{$('#perr').textContent='';$('#locst').textContent='Locating…';
-  try{loc=await getLoc();$('#locst').textContent='✓ Location captured'}catch(e){$('#locst').textContent='';$('#perr').textContent=e.message}};
-async function syncLoc(){try{if(!navigator.permissions)return;const s=await navigator.permissions.query({name:'geolocation'});if(s.state!=='granted')return;await api('loc',await getLoc())}catch(e){}}
+$('#locbtn').onclick=async()=>{$('#perr').textContent='';const q=$('#place').value.trim();
+  if(q.length<3){$('#locst').textContent='';$('#perr').textContent='Type your area and city, e.g. Indirapuram, Ghaziabad';return}
+  $('#locst').textContent='Checking…';
+  try{const d=await api('geo',{q});$('#locst').textContent='✓ Found: '+d.label}catch(e){$('#locst').textContent='';$('#perr').textContent=e.message}};
 function fill(){const m=data.me;sel.hobbies=new Set(m.hobbies||[]);sel.traits=new Set(m.traits||[]);sel.open=new Set(m.open||[]);
-  sel.looking=m.looking||'';sel.gender=m.gender||'';sel.level=m.level||'';sel.diet=m.diet||'';loc=null;
+  sel.looking=m.looking||'';sel.gender=m.gender||'';sel.level=m.level||'';sel.diet=m.diet||'';
   $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#about').value=m.about||'';$('#height').value=m.height||'';
-  $('#locst').textContent=m.hasLoc?'✓ Saved (tap to update)':'';$('#pcancel').classList.toggle('hide',!m.done);
+  $('#place').value=m.place||'';$('#locst').textContent=m.place?'✓ Saved':'';$('#pcancel').classList.toggle('hide',!m.done);
   $('#ph').textContent=m.done?'Edit your profile':'Step 3 of 3 · About you';aboutHint();chips();loadEd(m.photo)}
 $('#pbtn').onclick=async()=>{const er=t=>{$('#perr').textContent=t};er('');const h=+$('#height').value;
   if(!ed.img)return er('Please add your photo to continue');
   if(!sel.gender)return er('Please choose Man or Woman');
   if(!(h>=120&&h<=230))return er('Enter your height in cm (120 to 230)');
-  if(!loc&&!data.me.hasLoc)return er('Please tap "Use my current location"');
+  if($('#place').value.trim().length<3)return er('Type your area and city, e.g. Indirapuram, Ghaziabad');
   if(aboutLines().length<2)return er('Write at least 2 lines about yourself');
   if(sel.hobbies.size<3)return er('Pick at least 3 hobbies');
   if(!sel.looking)return er('Choose what you are looking for');
   if(sel.traits.size<2)return er('Pick at least 2 things you want in a partner');
   $('#pbtn').disabled=true;
-  try{await api('profile',{photo:ed.dirty?$('#pedit').toDataURL('image/jpeg',.75):undefined,gender:sel.gender,height:h,...(loc||{}),about:$('#about').value,level:sel.level,diet:sel.diet,
+  try{await api('profile',{photo:ed.dirty?$('#pedit').toDataURL('image/jpeg',.75):undefined,gender:sel.gender,height:h,place:$('#place').value.trim(),about:$('#about').value,level:sel.level,diet:sel.diet,
       hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,open:[...sel.open],traits:[...sel.traits],note:$('#note').value});
     editing=false;await refresh()}catch(e){er(e.message)}$('#pbtn').disabled=false};
 $('#pcancel').onclick=()=>{editing=false;refresh()};
@@ -236,7 +249,7 @@ async function refresh(){try{data=await api('matches',null,'?r='+radius);
     if(!data.me.done&&!editing){editing=true;fill()}
     if(editing){show('profile');return}
     if(viewing||chatWith)return;
-    show('main');draw();if(!synced){synced=true;syncLoc()}}
+    show(tab);draw()}
   catch(e){if(e.message==='Session expired'){localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;show('join')}}}
 const kmTxt=p=>p.km==null?'':'📍 ~'+p.km+' km away';
 function card(p,extra,btn='',open=false){
@@ -246,17 +259,23 @@ function card(p,extra,btn='',open=false){
     ${meta?`<div class="mu">${meta}</div>`:''}${(p.mutual||[]).length?`<div style="color:var(--or);font-size:14px">💞 Both open to: ${esc(p.mutual.join(', '))}</div>`:''}
     ${first?`<div class="mu">${esc(first.slice(0,90))}${first.length>90?'…':''}</div>`:''}${p.looking?`<div class="mu">Looking for: ${esc(p.looking)}</div>`:''}
     <div>${tags}</div>${(p.common||[]).length?`<div class="mu">⭐ ${p.common.length} hobb${p.common.length>1?'ies':'y'} in common</div>`:''}</div>${btn}</div>`}
-function draw(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
-  const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='230' height='140'><text transform='rotate(-24 115 70)' x='10' y='80' fill='rgba(255,255,255,.4)' stroke='rgba(0,0,0,.25)' stroke-width='.6' font-size='15' font-family='sans-serif'>${esc(data.me.name)} · ${esc(data.me.id.slice(-4))}</text></svg>`;
-  document.documentElement.style.setProperty('--wm','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');
-  $('#hi').textContent='Hi '+data.me.name+' 👋';
-  $('#rbox').classList.toggle('hide',!data.requests.length);
-  $('#reqs').innerHTML=data.requests.map(r=>card(r,'<b style="color:var(--or)">💌 wants to dandiya with you</b>',`<div style="display:flex;flex-direction:column;gap:6px"><button data-ok="${esc(r.id)}">Approve ✓</button><button class="s" data-no="${esc(r.id)}">Deny ✕</button></div>`)).join('');
-  $('#mbox').classList.toggle('hide',!data.matches.length);
-  $('#matches').innerHTML=data.matches.map(m=>card(m,`<span class="dot ${m.online?'on':''}"></span><span class="mu">${m.online?'online':'offline'}</span>${m.unread?` · <b style="color:var(--or)">${m.unread} new</b>`:''}`,`<button data-chat="${esc(m.id)}">💬 Chat</button>`)).join('');
+function dDiscover(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
   const list=data.people.filter(p=>p.age>=lo&&p.age<=hi);lastList=list;
   $('#people').innerHTML=list.length?list.map(p=>card(p,`<span class="dot ${p.online?'on':''}"></span><span class="mu">${p.online?'online':'offline'}</span>`,
     `<button class="${p.liked?'s':''}" data-id="${esc(p.id)}" ${p.liked?'disabled':''}>${p.liked?'Requested':'Like'}</button>`,true)).join(''):`<p class="mu">No one within ${radius} km yet — try a wider distance, or share the link!</p>`}
+function dLikes(){$('#reqs').innerHTML=data.requests.length?data.requests.map(r=>card(r,'<b style="color:var(--or)">💌 wants to dandiya with you</b>',`<div style="display:flex;flex-direction:column;gap:6px"><button data-ok="${esc(r.id)}">Approve ✓</button><button class="s" data-no="${esc(r.id)}">Deny ✕</button></div>`)).join(''):'<p class="mu">No requests yet. When someone asks you to dandiya, they appear here for your approval.</p>'}
+function dMatches(){$('#matches').innerHTML=data.matches.length?data.matches.map(m=>card(m,`<span class="dot ${m.online?'on':''}"></span><span class="mu">${m.online?'online':'offline'}</span>${m.unread?` · <b style="color:var(--or)">${m.unread} new</b>`:''}`,`<button data-chat="${esc(m.id)}">💬 Chat</button>`)).join(''):'<p class="mu">No matches yet. People you both approve appear here so you can chat.</p>'}
+function dMe(){const m=data.me;$('#meview').innerHTML=profBody({...m,online:undefined,common:[],mutual:[],km:null})
+  +((m.open||[]).length?pc('Also open to (private)',tg(m.open)):'')+(m.place?pc('📍 My location (private)',esc(m.place)):'')}
+function draw(){
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='230' height='140'><text transform='rotate(-24 115 70)' x='10' y='80' fill='rgba(255,255,255,.4)' stroke='rgba(0,0,0,.25)' stroke-width='.6' font-size='15' font-family='sans-serif'>${esc(data.me.name)} · ${esc(data.me.id.slice(-4))}</text></svg>`;
+  document.documentElement.style.setProperty('--wm','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');
+  const rq=data.requests.length,un=data.matches.reduce((a,m)=>a+m.unread,0);
+  $('#bl').textContent=rq;$('#bl').classList.toggle('hide',!rq);$('#bm').textContent=un;$('#bm').classList.toggle('hide',!un);
+  ({discover:dDiscover,likes:dLikes,matches:dMatches,me:dMe})[tab]()}
+const redraw=()=>{show(tab);draw()};
+function go(t){tab=t;redraw();window.scrollTo(0,0)}
+$('#nav').onclick=e=>{const b=e.target.closest('[data-t]');if(b)go(b.dataset.t)};
 $('#minA').oninput=$('#maxA').oninput=()=>data&&draw();
 $('#radius').value=radius;$('#radius').onchange=()=>{radius=+$('#radius').value;localStorage.dm_r=radius;refresh()};
 async function ask(id){try{const r=await api('like',{target:id});toast(r.matched?'🎉 Matched! Open Chat from Your matches.':'Request sent 💌')}catch(x){toast(x.message)}refresh()}
@@ -271,17 +290,17 @@ $('#matches').onclick=e=>{const id=e.target.dataset.chat;if(id)openChat(id)};
 const pc=(l,h)=>`<div class="pc"><div class="pl">${l}</div><div class="pt">${h}</div></div>`;
 const tg=(a,c=[])=>a.map(h=>`<span class="tag ${c.includes(h)?'hl':''}">${esc(h)}</span>`).join('');
 const nl=s=>esc(s).replace(/\n/g,'<br>');
-function openP(){const p=view.list[view.i],c=p.common||[];
+function profBody(p){const c=p.common||[];
   const facts=[p.height?p.height+' cm tall':'',p.km!=null?'📍 ~'+p.km+' km away':'',p.level?'Dandiya: '+p.level:'',p.diet||''].filter(Boolean);
-  $('#vcount').textContent=(view.i+1)+' of '+view.list.length;
-  $('#vbody').innerHTML=`<div class="hero" style="background-image:url('${esc(p.photo)}')">${p.photo?'':`<div class="hph">${esc((p.name||'?')[0].toUpperCase())}</div>`}<div class="wm"></div>
-    <div class="hov"><b>${esc(p.name)}, ${esc(p.age)}</b><div class="mu"><span class="dot ${p.online?'on':''}"></span>${p.online?'online now':'offline'}</div></div></div>`
+  return `<div class="hero" style="background-image:url('${esc(p.photo)}')">${p.photo?'':`<div class="hph">${esc((p.name||'?')[0].toUpperCase())}</div>`}<div class="wm"></div>
+    <div class="hov"><b>${esc(p.name)}, ${esc(p.age)}</b>${p.online===undefined?'':`<div class="mu"><span class="dot ${p.online?'on':''}"></span>${p.online?'online now':'offline'}</div>`}</div></div>`
     +((p.mutual||[]).length?pc('💞 You are both open to',tg(p.mutual,p.mutual)):'')+(p.about?pc('About me',nl(p.about)):'')+(facts.length?pc('Quick facts',tg(facts)):'')
     +(p.looking?pc('Looking for',esc(p.looking)):'')+(c.length?pc('⭐ You both love',tg(c,c)):'')+((p.hobbies||[]).length?pc('Hobbies',tg(p.hobbies,c)):'')
-    +(p.likes?pc('I like',esc(p.likes)):'')+(((p.traits||[]).length||p.note)?pc('My ideal dandiya partner',tg(p.traits||[])+(p.note?`<div style="margin-top:8px">${esc(p.note)}</div>`:'')):'');
+    +(p.likes?pc('I like',esc(p.likes)):'')+(((p.traits||[]).length||p.note)?pc('My ideal dandiya partner',tg(p.traits||[])+(p.note?`<div style="margin-top:8px">${esc(p.note)}</div>`:'')):'')}
+function openP(){const p=view.list[view.i];$('#vcount').textContent=(view.i+1)+' of '+view.list.length;$('#vbody').innerHTML=profBody(p);
   const b=$('#vlike');b.disabled=!!p.liked;b.textContent=p.liked?'Requested ✓':'💃 Ask to dandiya'}
-function nextP(){if(view.i<view.list.length-1){view.i++;openP();window.scrollTo(0,0)}else{viewing=false;show('main');draw();toast("That's everyone for now 🪔")}}
-$('#vback').onclick=()=>{viewing=false;show('main');draw()};$('#vpass').onclick=nextP;
+function nextP(){if(view.i<view.list.length-1){view.i++;openP();window.scrollTo(0,0)}else{viewing=false;redraw();toast("That's everyone for now 🪔")}}
+$('#vback').onclick=()=>{viewing=false;redraw()};$('#vpass').onclick=nextP;
 $('#vlike').onclick=async()=>{const p=view.list[view.i];if(p.liked)return;$('#vlike').disabled=true;
   try{const r=await api('like',{target:p.id});p.liked=true;data=await api('matches',null,'?r='+radius);
     toast(r.matched?"🎉 It's a match with "+p.name+"! Open Chat from Your matches.":'Request sent to '+p.name+' 💌');nextP()}catch(e){toast(e.message);$('#vlike').disabled=false}};
@@ -290,7 +309,7 @@ $('#vlike').onclick=async()=>{const p=view.list[view.i];if(p.liked)return;$('#vl
 async function openChat(id){const m=data.matches.find(x=>x.id===id);if(!m)return;
   chatWith=m;lastCount=-1;show('chat');$('#chead').textContent=m.name+', '+m.age;$('#cmsgs').innerHTML='';
   await loadChat(true);clearInterval(chatTimer);chatTimer=setInterval(()=>loadChat(false),3000);window.scrollTo(0,0)}
-function closeChat(){clearInterval(chatTimer);chatWith=null;refresh()}
+function closeChat(){clearInterval(chatTimer);chatWith=null;tab='matches';refresh()}
 async function loadChat(force){if(!chatWith)return;
   try{const d=await api('chat',null,'?with='+chatWith.id);
     if(!force&&d.msgs.length===lastCount)return;lastCount=d.msgs.length;
