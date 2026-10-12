@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dandiya Match</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1c120d;--card:#2a1b14;--line:#4a3125;--or:#ff8a3d;--tx:#f5e9df;--mu:#b9a394}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;padding:20px}
+main{max-width:640px;margin:auto}h1{color:var(--or);margin:0}h2{margin:0 0 8px}p.sub{color:var(--mu);margin:4px 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+input{width:100%;padding:10px;margin:6px 0;background:#1c120d;color:var(--tx);border:1px solid var(--line);border-radius:8px;font-size:16px}
+button{background:var(--or);color:#1c120d;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;font-size:15px}
+button.s{background:transparent;color:var(--or);border:1px solid var(--or)}button:disabled{opacity:.5}
+.chip{background:transparent;color:var(--tx);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:500;margin:4px 6px 4px 0;font-size:14px}
+.chip.on{background:var(--or);color:#1c120d;border-color:var(--or);font-weight:700}
+label.mu{display:block;margin-top:14px}
+.tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mu);margin:4px 4px 0 0}.tag.hl{border-color:var(--or);color:var(--or)}
+.pf{display:flex;align-items:center;gap:8px}.pf span{padding:10px 12px;background:#1c120d;border:1px solid var(--line);border-radius:8px;font-size:16px}
+.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.p{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.p:first-child{border-top:0}.p img,.ph{width:56px;height:56px;border-radius:50%;object-fit:cover;background:var(--line);flex:none}
+.p>div{flex:1}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#555;margin-right:6px}.dot.on{background:#4ade80}
+.err{color:#ff6b6b;min-height:20px}.mu{color:var(--mu);font-size:14px}table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid var(--line);text-align:left}
+.hero{position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#ff8a3d,#ff4d8d);aspect-ratio:4/5;max-height:440px;margin-bottom:12px}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}.hph{width:100%;height:100%;display:grid;place-items:center;font-size:96px;font-weight:800;color:#1c120d}
+.hov{position:absolute;left:0;right:0;bottom:0;padding:48px 16px 14px;background:linear-gradient(transparent,#000b)}.hov b{font-size:28px}
+.pc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.pl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}.pt{font-size:19px;line-height:1.4}.pt .tag{font-size:14px;padding:5px 12px}
+.vact{position:sticky;bottom:12px;margin-top:6px}.vact button{padding:14px;font-size:16px;border-radius:999px}.vact button.s{background:var(--bg)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card);border:1px solid var(--or);color:var(--tx);padding:12px 18px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center}
+.logo{display:flex;align-items:center;gap:8px;font-weight:400;line-height:1.1}
+.logo span{font-family:'Great Vibes','Brush Script MT','Segoe Script',cursive;font-size:52px;padding:2px 6px 6px 0;background:linear-gradient(90deg,#ff8a3d,#ff4d8d 55%,#ffd93d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stick{flex:none;filter:drop-shadow(0 2px 6px #ff8a3d55)}
+.hide{display:none}
+</style></head><body><main>
+<h1 class="logo"><svg class="stick" viewBox="0 0 64 64" width="58" height="58" aria-hidden="true">
+<defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3d8b"/><stop offset=".5" stop-color="#ff9a3d"/><stop offset="1" stop-color="#ffd93d"/></linearGradient>
+<linearGradient id="gB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2ee5c2"/><stop offset=".5" stop-color="#3d9bff"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+<g transform="rotate(38 32 32)"><rect x="28" y="2" width="8" height="60" rx="4" fill="url(#gA)"/>
+<rect x="28" y="12" width="8" height="3" fill="#fff"/><rect x="28" y="30" width="8" height="3" fill="#fff"/><rect x="28" y="48" width="8" height="3" fill="#fff"/>
+<circle cx="32" cy="21" r="1.7" fill="#fff"/><circle cx="32" cy="40" r="1.7" fill="#fff"/><circle cx="32" cy="6" r="2" fill="#ffd93d"/><circle cx="32" cy="58" r="2" fill="#ffd93d"/></g>
+<g transform="rotate(-38 32 32)"><rect x="28" y="2" width="8" height="60" rx="4" fill="url(#gB)"/>
+<rect x="28" y="12" width="8" height="3" fill="#ffe14d"/><rect x="28" y="30" width="8" height="3" fill="#ffe14d"/><rect x="28" y="48" width="8" height="3" fill="#ffe14d"/>
+<circle cx="32" cy="21" r="1.7" fill="#fff"/><circle cx="32" cy="40" r="1.7" fill="#fff"/><circle cx="32" cy="6" r="2" fill="#ff3d8b"/><circle cx="32" cy="58" r="2" fill="#ff3d8b"/></g></svg><span>Dandiya Match</span></h1><p class="sub">Find your dandiya partner for the night</p>
+
+<section id="join" class="card hide">
+  <input id="name" placeholder="Your name" maxlength="40">
+  <input id="age" type="number" placeholder="Age" min="14" max="100">
+  <div class="pf"><span>+91</span><input id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number"></div>
+  <label class="mu">Photo (required)</label><input id="photo" type="file" accept="image/*">
+  <p class="err" id="jerr"></p><button id="jbtn">Next →</button>
+</section>
+
+<section id="profile" class="card hide">
+  <h2>Tell us about you</h2>
+  <label class="mu">Your hobbies (pick a few)</label><div id="hobbies"></div>
+  <input id="hobx" maxlength="30" placeholder="Other hobby — type and press Enter">
+  <label class="mu">Things you like</label>
+  <input id="likes" maxlength="200" placeholder="e.g. street food, Bollywood, garba nights">
+  <label class="mu">What are you looking for?</label><div id="looking"></div>
+  <label class="mu">Your ideal partner is…</label><div id="traits"></div>
+  <input id="note" maxlength="200" placeholder="Anything else about your ideal partner (optional)">
+  <p class="err" id="perr"></p>
+  <div class="row"><button id="pbtn">Save &amp; find matches</button><button class="s hide" id="pcancel">Cancel</button></div>
+</section>
+
+<section id="main" class="hide">
+  <div class="card"><div class="row"><b id="hi"></b><button class="s" id="edit" style="flex:none">Edit profile</button></div>
+    <div class="row" style="margin-top:8px"><input id="minA" type="number" placeholder="Min age"><input id="maxA" type="number" placeholder="Max age"></div></div>
+  <div class="card hide" id="mbox"><b>🎉 Mutual matches</b><div id="matches"></div></div>
+  <div class="card"><b>People here</b> <span class="mu">(most in common first)</span><div id="people"></div></div>
+</section>
+
+<section id="view" class="hide">
+  <div class="row" style="margin-bottom:10px"><button class="s" id="vback" style="flex:none">← Back</button><span class="mu" id="vcount" style="text-align:right"></span></div>
+  <div id="vbody"></div>
+  <div class="row vact"><button class="s" id="vpass">✕ Pass</button><button id="vlike">💃 Ask to dandiya</button></div>
+</section>
+
+<section id="admin" class="hide">
+  <div class="card" id="alogin"><input id="pw" type="password" placeholder="Admin password"><p class="err" id="aerr"></p><button id="abtn">Open admin panel</button></div>
+  <div class="card hide" id="adash"><div class="row"><div><b id="tot"></b><div class="mu">total</div></div><div><b id="onl" style="color:#4ade80"></b><div class="mu">online now</div></div></div>
+  <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Age</th><th>Phone</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></div>
+</section>
+</main>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function api(a,body,q=''){const r=await fetch('/api/'+a+q,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:undefined);
+  const d=await r.json().catch(()=>({error:'Server error'}));if(!r.ok)throw new Error(d.error||'Error');return d}
+const show=id=>['join','profile','main','view','admin'].forEach(x=>$('#'+x).classList.toggle('hide',x!==id));
+let photo='',data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[];
+
+// ---- page 1: basic details
+$('#photo').onchange=e=>{const f=e.target.files[0];if(!f)return;const img=new Image();
+  img.onload=()=>{const k=Math.min(1,240/Math.max(img.width,img.height)),c=document.createElement('canvas');
+    c.width=img.width*k;c.height=img.height*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);photo=c.toDataURL('image/jpeg',.7)};
+  img.onerror=()=>{photo='';$('#jerr').textContent='Could not read that image. Please try another photo.'};
+  img.src=URL.createObjectURL(f)};
+$('#phone').oninput=e=>{let v=e.target.value.replace(/\D/g,'');if(v.length>10&&v.startsWith('91'))v=v.slice(2);e.target.value=v.slice(0,10)};
+$('#jbtn').onclick=async()=>{$('#jerr').textContent='';
+  const ph=$('#phone').value;
+  if(!/^[6-9]\d{9}$/.test(ph)){$('#jerr').textContent='Enter a valid 10-digit Indian mobile number';return}
+  if(!photo){$('#jerr').textContent='Please add your photo to continue';return}
+  $('#jbtn').disabled=true;
+  try{const d=await api('join',{name:$('#name').value,age:$('#age').value,phone:'+91'+ph,photo});
+    localStorage.dm_id=d.id;start()}catch(e){$('#jerr').textContent=e.message}$('#jbtn').disabled=false};
+
+// ---- page 2: hobbies, likes, partner type
+const HOB=['Dancing','Music','Travelling','Movies','Cooking','Fitness','Photography','Reading','Gaming','Art'];
+const LOOK=['Dandiya partner for the night','New friends','Something serious'];
+const TR=['Fun & energetic','Good dancer','Caring','Funny','Adventurous','Traditional','Ambitious','Calm & polite'];
+const sel={hobbies:new Set(),traits:new Set(),looking:''};
+const chip=(x,on,k)=>`<button type="button" class="chip ${on?'on':''}" data-k="${k}" data-v="${esc(x)}">${esc(x)}</button>`;
+function chips(){
+  $('#hobbies').innerHTML=[...new Set([...HOB,...sel.hobbies])].map(x=>chip(x,sel.hobbies.has(x),'h')).join('');
+  $('#traits').innerHTML=TR.map(x=>chip(x,sel.traits.has(x),'t')).join('');
+  $('#looking').innerHTML=LOOK.map(x=>chip(x,sel.looking===x,'l')).join('')}
+$('#profile').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const{k,v}=b.dataset;
+  if(k==='l')sel.looking=v;else{const s=k==='h'?sel.hobbies:sel.traits;s.has(v)?s.delete(v):s.add(v)}chips()};
+$('#hobx').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim().slice(0,30);if(v){sel.hobbies.add(v);e.target.value='';chips()}}};
+function fill(){const m=data.me;sel.hobbies=new Set(m.hobbies||[]);sel.traits=new Set(m.traits||[]);sel.looking=m.looking||'';
+  $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#pcancel').classList.toggle('hide',!m.done);chips()}
+$('#pbtn').onclick=async()=>{$('#perr').textContent='';$('#pbtn').disabled=true;
+  try{await api('profile',{id:localStorage.dm_id,hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,traits:[...sel.traits],note:$('#note').value});
+    editing=false;await refresh()}catch(e){$('#perr').textContent=e.message}$('#pbtn').disabled=false};
+$('#pcancel').onclick=()=>{editing=false;refresh()};
+$('#edit').onclick=()=>{editing=true;fill();show('profile')};
+
+// ---- main page
+async function refresh(){try{data=await api('matches',null,'?id='+localStorage.dm_id);
+    if(!data.me.done&&!editing){editing=true;fill()}
+    if(editing){show('profile');return}
+    if(viewing)return;
+    show('main');draw()}
+  catch(e){if(e.message==='Session expired'){localStorage.removeItem('dm_id');clearInterval(timer);editing=viewing=false;show('join')}}}
+function card(p,extra,btn='',open=false){
+  const tags=(p.hobbies||[]).slice(0,6).map(h=>`<span class="tag ${(p.common||[]).includes(h)?'hl':''}">${esc(h)}</span>`).join('');
+  return `<div class="p" ${open?`data-open="${esc(p.id)}" style="cursor:pointer"`:''}>${p.photo?`<img src="${esc(p.photo)}">`:'<div class="ph"></div>'}<div><b>${esc(p.name)}</b>, ${esc(p.age)}<br>${extra}
+    ${p.looking?`<div class="mu">Looking for: ${esc(p.looking)}</div>`:''}${p.likes?`<div class="mu">Likes: ${esc(p.likes)}</div>`:''}
+    ${(p.traits||[]).length?`<div class="mu">Wants someone: ${esc(p.traits.join(', '))}</div>`:''}<div>${tags}</div>
+    ${(p.common||[]).length?`<div class="mu">⭐ ${p.common.length} hobb${p.common.length>1?'ies':'y'} in common</div>`:''}</div>${btn}</div>`}
+function draw(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
+  $('#hi').textContent='Hi '+data.me.name+' 👋';
+  $('#mbox').classList.toggle('hide',!data.matches.length);
+  $('#matches').innerHTML=data.matches.map(m=>card(m,`📞 <a style="color:var(--or)" href="tel:${esc(m.phone)}">${esc(m.phone)}</a>`)).join('');
+  const list=data.people.filter(p=>p.age>=lo&&p.age<=hi);lastList=list;
+  $('#people').innerHTML=list.length?list.map(p=>card(p,`<span class="dot ${p.online?'on':''}"></span><span class="mu">${p.online?'online':'offline'}</span>`,
+    `<button class="${p.liked?'s':''}" data-id="${esc(p.id)}" ${p.liked?'disabled':''}>${p.liked?'Liked':'Like'}</button>`,true)).join(''):'<p class="mu">No one here yet — share the link!</p>'}
+$('#people').onclick=async e=>{
+  const lb=e.target.closest('button[data-id]');
+  if(lb){await api('like',{id:localStorage.dm_id,target:lb.dataset.id});refresh();return}
+  const c=e.target.closest('[data-open]');if(!c)return;
+  const i=lastList.findIndex(p=>p.id===c.dataset.open);if(i<0)return;
+  view={list:lastList,i};viewing=true;show('view');openP();window.scrollTo(0,0)};
+
+// ---- full profile view (one person at a time)
+const pc=(l,h)=>`<div class="pc"><div class="pl">${l}</div><div class="pt">${h}</div></div>`;
+const tg=(a,c=[])=>a.map(h=>`<span class="tag ${c.includes(h)?'hl':''}">${esc(h)}</span>`).join('');
+function openP(){const p=view.list[view.i],c=p.common||[];
+  $('#vcount').textContent=(view.i+1)+' of '+view.list.length;
+  $('#vbody').innerHTML=`<div class="hero">${p.photo?`<img src="${esc(p.photo)}">`:`<div class="hph">${esc((p.name||'?')[0].toUpperCase())}</div>`}
+    <div class="hov"><b>${esc(p.name)}, ${esc(p.age)}</b><div class="mu"><span class="dot ${p.online?'on':''}"></span>${p.online?'online now':'offline'}</div></div></div>`
+    +(p.looking?pc('Looking for',esc(p.looking)):'')
+    +(c.length?pc('⭐ You both love',tg(c,c)):'')
+    +((p.hobbies||[]).length?pc('Hobbies',tg(p.hobbies,c)):'')
+    +(p.likes?pc('I like',esc(p.likes)):'')
+    +(((p.traits||[]).length||p.note)?pc('My ideal dandiya partner',tg(p.traits||[])+(p.note?`<div style="margin-top:8px">${esc(p.note)}</div>`:'')):'');
+  const b=$('#vlike');b.disabled=!!p.liked;b.textContent=p.liked?'Requested ✓':'💃 Ask to dandiya'}
+function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,4000)}
+function nextP(){if(view.i<view.list.length-1){view.i++;openP();window.scrollTo(0,0)}
+  else{viewing=false;show('main');draw();toast("That's everyone for now 🪔")}}
+$('#vback').onclick=()=>{viewing=false;show('main');draw()};
+$('#vpass').onclick=nextP;
+$('#vlike').onclick=async()=>{const p=view.list[view.i];if(p.liked)return;$('#vlike').disabled=true;
+  try{await api('like',{id:localStorage.dm_id,target:p.id});p.liked=true;
+    data=await api('matches',null,'?id='+localStorage.dm_id);
+    if(data.matches.some(m=>m.id===p.id))toast("🎉 It's a dandiya match with "+p.name+"! See Mutual matches.");
+    nextP()}catch(e){toast(e.message);$('#vlike').disabled=false}};
+$('#minA').oninput=$('#maxA').oninput=()=>data&&draw();
+function start(){show('');refresh();clearInterval(timer);timer=setInterval(refresh,15000)}
+
+// ---- admin (#admin)
+let apw='';
+async function loadAdmin(remove){try{const d=await api('admin',{password:apw,remove});$('#alogin').classList.add('hide');$('#adash').classList.remove('hide');
+  $('#tot').textContent=d.total;$('#onl').textContent=d.online;
+  $('#rows').innerHTML=d.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.age)}</td><td>${esc(u.phone)}</td><td><span class="dot ${u.online?'on':''}"></span>${u.online?'online':'offline'}</td><td><button class="s" data-rm="${esc(u.id)}">✕</button></td></tr>`).join('')}
+  catch(e){$('#aerr').textContent=e.message;apw=''}}
+$('#abtn').onclick=()=>{apw=$('#pw').value;loadAdmin();setInterval(()=>apw&&loadAdmin(),10000)};
+$('#rows').onclick=e=>{const id=e.target.dataset.rm;if(id&&confirm('Remove this user?'))loadAdmin(id)};
+
+if(location.hash==='#admin')show('admin');else localStorage.dm_id?start():show('join');
+</script></body></html>
