@@ -4,34 +4,37 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#1c120d;--card:#2a1b14;--line:#4a3125;--or:#ff8a3d;--tx:#f5e9df;--mu:#b9a394}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;padding:20px}
-main{max-width:640px;margin:auto}h1{color:var(--or);margin:0}h2{margin:0 0 8px}p.sub{color:var(--mu);margin:4px 0 16px}
+:root{--bg:#1c120d;--card:#2a1b14;--line:#4a3125;--or:#ff8a3d;--tx:#f5e9df;--mu:#b9a394;--wm:none}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;padding:20px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input{-webkit-user-select:text;user-select:text}@media print{body{display:none!important}}
+main{max-width:640px;margin:auto}h2{margin:0 0 8px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:400;line-height:1.1;margin:0}
+.logo span{font-family:'Great Vibes','Brush Script MT','Segoe Script',cursive;font-size:52px;padding:2px 6px 6px 0;background:linear-gradient(90deg,#ff8a3d,#ff4d8d 55%,#ffd93d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stick{flex:none;filter:drop-shadow(0 2px 6px #ff8a3d55)}p.sub{color:var(--mu);margin:4px 0 16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
 input{width:100%;padding:10px;margin:6px 0;background:#1c120d;color:var(--tx);border:1px solid var(--line);border-radius:8px;font-size:16px}
 button{background:var(--or);color:#1c120d;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;font-size:15px}
 button.s{background:transparent;color:var(--or);border:1px solid var(--or)}button:disabled{opacity:.5}
-.chip{background:transparent;color:var(--tx);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:500;margin:4px 6px 4px 0;font-size:14px}
-.chip.on{background:var(--or);color:#1c120d;border-color:var(--or);font-weight:700}
+.chip{background:transparent;color:var(--tx);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:500;margin:4px 6px 4px 0;font-size:14px}.chip.on{background:var(--or);color:#1c120d;border-color:var(--or);font-weight:700}
 label.mu{display:block;margin-top:14px}
 .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mu);margin:4px 4px 0 0}.tag.hl{border-color:var(--or);color:var(--or)}
 .pf{display:flex;align-items:center;gap:8px}.pf span{padding:10px 12px;background:#1c120d;border:1px solid var(--line);border-radius:8px;font-size:16px}
-.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.p{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
-.p:first-child{border-top:0}.p img,.ph{width:56px;height:56px;border-radius:50%;object-fit:cover;background:var(--line);flex:none}
-.p>div{flex:1}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#555;margin-right:6px}.dot.on{background:#4ade80}
+.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}
+.p{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}.p:first-child{border-top:0}.pi{flex:1}
+.av{width:56px;height:56px;border-radius:50%;background:var(--line) center/cover;flex:none}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#555;margin-right:6px}.dot.on{background:#4ade80}
 .err{color:#ff6b6b;min-height:20px}.mu{color:var(--mu);font-size:14px}table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid var(--line);text-align:left}
-.hero{position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#ff8a3d,#ff4d8d);aspect-ratio:4/5;max-height:440px;margin-bottom:12px}
-.hero img{width:100%;height:100%;object-fit:cover;display:block}.hph{width:100%;height:100%;display:grid;place-items:center;font-size:96px;font-weight:800;color:#1c120d}
+.hero{position:relative;border-radius:16px;overflow:hidden;background:#3a261c center/cover no-repeat;aspect-ratio:4/5;max-height:440px;margin-bottom:12px}
+.hph{width:100%;height:100%;display:grid;place-items:center;font-size:96px;font-weight:800;color:#1c120d;background:linear-gradient(135deg,#ff8a3d,#ff4d8d)}
+.wm{position:absolute;inset:0;background-image:var(--wm);pointer-events:none}
 .hov{position:absolute;left:0;right:0;bottom:0;padding:48px 16px 14px;background:linear-gradient(transparent,#000b)}.hov b{font-size:28px}
 .pc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
 .pl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}.pt{font-size:19px;line-height:1.4}.pt .tag{font-size:14px;padding:5px 12px}
 .vact{position:sticky;bottom:12px;margin-top:6px}.vact button{padding:14px;font-size:16px;border-radius:999px}.vact button.s{background:var(--bg)}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card);border:1px solid var(--or);color:var(--tx);padding:12px 18px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center}
-.logo{display:flex;align-items:center;gap:8px;font-weight:400;line-height:1.1}
-.logo span{font-family:'Great Vibes','Brush Script MT','Segoe Script',cursive;font-size:52px;padding:2px 6px 6px 0;background:linear-gradient(90deg,#ff8a3d,#ff4d8d 55%,#ffd93d);-webkit-background-clip:text;background-clip:text;color:transparent}
-.stick{flex:none;filter:drop-shadow(0 2px 6px #ff8a3d55)}
 #pedit{width:140px;height:140px;border-radius:14px;background:#1c120d;border:1px solid var(--line);flex:none}
 .m{max-width:80%;padding:8px 12px;border-radius:14px;background:#3a261c;align-self:flex-start;word-break:break-word}.m.me{align-self:flex-end;background:var(--or);color:#1c120d}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card);border:1px solid var(--or);color:var(--tx);padding:12px 18px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center}
+body.shield .hero,body.shield .av{filter:blur(40px)}
 .hide{display:none}
 </style></head><body><main>
 <h1 class="logo"><svg class="stick" viewBox="0 0 64 64" width="58" height="58" aria-hidden="true">
@@ -45,31 +48,37 @@ label.mu{display:block;margin-top:14px}
 <circle cx="32" cy="21" r="1.7" fill="#fff"/><circle cx="32" cy="40" r="1.7" fill="#fff"/><circle cx="32" cy="6" r="2" fill="#ff3d8b"/><circle cx="32" cy="58" r="2" fill="#ff3d8b"/></g></svg><span>Dandiya Match</span></h1><p class="sub">Find your dandiya partner for the night</p>
 
 <section id="join" class="card hide">
-  <input id="name" placeholder="Your name" maxlength="40">
-  <input id="age" type="number" placeholder="Age" min="14" max="100">
+  <h2>Step 1 of 3 · Your details</h2>
+  <input id="name" placeholder="Your name" maxlength="40"><input id="age" type="number" placeholder="Age" min="14" max="100">
   <div class="pf"><span>+91</span><input id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number"></div>
-  <label class="mu">Photo (required)</label><input id="photo" type="file" accept="image/*">
   <p class="err" id="jerr"></p><button id="jbtn">Next →</button>
+  <p class="mu">Already have an account? <a href="#" id="tologin" style="color:var(--or)">Log in with Gmail</a></p>
+</section>
+
+<section id="auth" class="card hide">
+  <h2 id="ah">Step 2 of 3 · Verify your Gmail</h2><p class="mu">We'll email a 6-digit code to confirm it's really you. One Gmail = one account.</p>
+  <input id="em" type="email" placeholder="yourname@gmail.com" autocomplete="email">
+  <div id="otpbox" class="hide"><input id="otp" inputmode="numeric" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code">
+    <p class="mu">Code sent — check Inbox and Spam. <a href="#" id="resend" style="color:var(--or)">Resend</a> · <a href="#" id="chg" style="color:var(--or)">Change Gmail</a></p></div>
+  <p class="err" id="uerr"></p><div class="row"><button class="s" id="aback">← Back</button><button id="ubtn">Send code</button></div>
 </section>
 
 <section id="profile" class="card hide">
-  <h2>Tell us about you</h2>
-  <label class="mu">Your photo</label>
+  <h2 id="ph">Step 3 of 3 · About you</h2>
+  <label class="mu">Your photo (required)</label>
   <div class="row" style="align-items:flex-start"><canvas id="pedit" width="240" height="240"></canvas>
     <div><input id="pfile" type="file" accept="image/*"><label class="mu">Zoom</label><input id="pzoom" type="range" min="1" max="3" step="0.05" value="1" style="padding:0"><button type="button" class="s" id="prot">⟳ Rotate</button></div></div>
   <label class="mu">Your hobbies (pick a few)</label><div id="hobbies"></div>
   <input id="hobx" maxlength="30" placeholder="Other hobby — type and press Enter">
-  <label class="mu">Things you like</label>
-  <input id="likes" maxlength="200" placeholder="e.g. street food, Bollywood, garba nights">
+  <label class="mu">Things you like</label><input id="likes" maxlength="200" placeholder="e.g. street food, Bollywood, garba nights">
   <label class="mu">What are you looking for?</label><div id="looking"></div>
   <label class="mu">Your ideal partner is…</label><div id="traits"></div>
   <input id="note" maxlength="200" placeholder="Anything else about your ideal partner (optional)">
-  <p class="err" id="perr"></p>
-  <div class="row"><button id="pbtn">Save &amp; find matches</button><button class="s hide" id="pcancel">Cancel</button></div>
+  <p class="err" id="perr"></p><div class="row"><button id="pbtn">Save &amp; find matches</button><button class="s hide" id="pcancel">Cancel</button></div>
 </section>
 
 <section id="main" class="hide">
-  <div class="card"><div class="row"><b id="hi"></b><button class="s" id="edit" style="flex:none">Edit profile</button></div>
+  <div class="card"><div class="row"><b id="hi"></b><button class="s" id="edit" style="flex:none">Edit profile</button><button class="s" id="logout" style="flex:none">Log out</button></div>
     <div class="row" style="margin-top:8px"><input id="minA" type="number" placeholder="Min age"><input id="maxA" type="number" placeholder="Max age"></div></div>
   <div class="card hide" id="rbox"><b>💌 Dandiya requests</b><div id="reqs"></div></div>
   <div class="card hide" id="mbox"><b>💬 Your matches</b><div id="matches"></div></div>
@@ -92,80 +101,102 @@ label.mu{display:block;margin-top:14px}
 <section id="admin" class="hide">
   <div class="card" id="alogin"><input id="pw" type="password" placeholder="Admin password"><p class="err" id="aerr"></p><button id="abtn">Open admin panel</button></div>
   <div class="card hide" id="adash"><div class="row"><div><b id="tot"></b><div class="mu">total</div></div><div><b id="onl" style="color:#4ade80"></b><div class="mu">online now</div></div></div>
-  <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Age</th><th>Phone</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></div>
+  <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Age</th><th>Email</th><th>Phone</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></div>
 </section>
-</main>
-<div id="toast"></div>
+</main><div id="toast"></div>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-async function api(a,body,q=''){const r=await fetch('/api/'+a+q,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:undefined);
+async function api(a,body,q=''){const h={'x-token':localStorage.dm_token||''};if(body)h['Content-Type']='application/json';
+  const r=await fetch('/api/'+a+q,{method:body?'POST':'GET',headers:h,body:body?JSON.stringify(body):undefined});
   const d=await r.json().catch(()=>({error:'Server error'}));if(!r.ok)throw new Error(d.error||'Error');return d}
-const show=id=>['join','profile','main','view','chat','admin'].forEach(x=>$('#'+x).classList.toggle('hide',x!==id));
-let photo='',data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[],chatWith=null,chatTimer,lastCount=-1,prevReq=-1,ed={img:null,rot:0,zoom:1,dirty:false};
+const show=id=>['join','auth','profile','main','view','chat','admin'].forEach(x=>$('#'+x).classList.toggle('hide',x!==id));
+function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,4000)}
+let data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[],chatWith=null,chatTimer,lastCount=-1,prevReq=-1,reg=null,ticket='',otpSent=false,loginMode=false;
 
-// ---- page 1: basic details
-$('#photo').onchange=e=>{const f=e.target.files[0];if(!f)return;const img=new Image();
-  img.onload=()=>{const k=Math.min(1,240/Math.max(img.width,img.height)),c=document.createElement('canvas');
-    c.width=img.width*k;c.height=img.height*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);photo=c.toDataURL('image/jpeg',.7)};
-  img.onerror=()=>{photo='';$('#jerr').textContent='Could not read that image. Please try another photo.'};
-  img.src=URL.createObjectURL(f)};
+// ---- Step 1: name, age, phone
 $('#phone').oninput=e=>{let v=e.target.value.replace(/\D/g,'');if(v.length>10&&v.startsWith('91'))v=v.slice(2);e.target.value=v.slice(0,10)};
-$('#jbtn').onclick=async()=>{$('#jerr').textContent='';
-  const ph=$('#phone').value;
+$('#jbtn').onclick=()=>{$('#jerr').textContent='';const name=$('#name').value.trim(),age=+$('#age').value,ph=$('#phone').value;
+  if(!name){$('#jerr').textContent='Please enter your name';return}
+  if(!(age>=14&&age<=100)){$('#jerr').textContent='Enter a valid age';return}
   if(!/^[6-9]\d{9}$/.test(ph)){$('#jerr').textContent='Enter a valid 10-digit Indian mobile number';return}
-  if(!photo){$('#jerr').textContent='Please add your photo to continue';return}
-  $('#jbtn').disabled=true;
-  try{const d=await api('join',{name:$('#name').value,age:$('#age').value,phone:'+91'+ph,photo});
-    localStorage.dm_id=d.id;start()}catch(e){$('#jerr').textContent=e.message}$('#jbtn').disabled=false};
+  reg={name,age,phone:'+91'+ph};
+  if(ticket)doJoin('#jerr');else openAuth(false)};
+$('#tologin').onclick=e=>{e.preventDefault();reg=null;openAuth(true)};
+async function doJoin(errSel){try{const d=await api('join',{...reg,ticket});localStorage.dm_token=d.token;ticket='';reg=null;start()}
+  catch(e){$(errSel).textContent=e.message;if(/verify again/.test(e.message)){ticket='';openAuth(false)}}}
 
-// ---- page 2: hobbies, likes, partner type
+// ---- Step 2: Gmail + OTP
+const GM=/^[^@\s]+@(gmail|googlemail)\.com$/i;
+function resetAuth(){otpSent=false;$('#em').readOnly=false;$('#em').value='';$('#otp').value='';$('#otpbox').classList.add('hide');$('#ubtn').textContent='Send code';$('#uerr').textContent=''}
+function openAuth(login){loginMode=login;resetAuth();$('#ah').textContent=login?'Log in with Gmail':'Step 2 of 3 · Verify your Gmail';show('auth')}
+async function sendOtp(){$('#uerr').textContent='';const em=$('#em').value.trim();
+  if(!GM.test(em)){$('#uerr').textContent='Enter a valid Gmail address (…@gmail.com)';return}
+  $('#ubtn').disabled=true;
+  try{await api('otp-send',{email:em});otpSent=true;$('#em').readOnly=true;$('#otpbox').classList.remove('hide');$('#ubtn').textContent='Verify';$('#otp').focus();toast('Code sent to '+em)}
+  catch(e){$('#uerr').textContent=e.message}$('#ubtn').disabled=false}
+async function verifyOtp(){$('#uerr').textContent='';const code=$('#otp').value.trim();
+  if(!/^\d{6}$/.test(code)){$('#uerr').textContent='Enter the 6-digit code';return}
+  $('#ubtn').disabled=true;
+  try{const d=await api('otp-verify',{email:$('#em').value.trim(),code});
+    if(d.token){localStorage.dm_token=d.token;start()}
+    else{ticket=d.ticket;if(reg)await doJoin('#uerr');else{toast('No account for this Gmail yet — fill in your details to sign up.');show('join')}}}
+  catch(e){$('#uerr').textContent=e.message}$('#ubtn').disabled=false}
+$('#ubtn').onclick=()=>otpSent?verifyOtp():sendOtp();
+$('#otp').oninput=e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);
+$('#em').onkeydown=$('#otp').onkeydown=e=>{if(e.key==='Enter')$('#ubtn').click()};
+$('#resend').onclick=e=>{e.preventDefault();$('#em').readOnly=false;sendOtp()};
+$('#chg').onclick=e=>{e.preventDefault();resetAuth()};
+$('#aback').onclick=()=>show('join');
+$('#logout').onclick=async()=>{try{await api('logout',{})}catch(e){}localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;data=null;reg=null;ticket='';show('join')};
+
+// ---- Step 3: photo, hobbies, likes, partner type
 const HOB=['Dancing','Music','Travelling','Movies','Cooking','Fitness','Photography','Reading','Gaming','Art'];
 const LOOK=['Dandiya partner for the night','New friends','Something serious'];
 const TR=['Fun & energetic','Good dancer','Caring','Funny','Adventurous','Traditional','Ambitious','Calm & polite'];
 const sel={hobbies:new Set(),traits:new Set(),looking:''};
 const chip=(x,on,k)=>`<button type="button" class="chip ${on?'on':''}" data-k="${k}" data-v="${esc(x)}">${esc(x)}</button>`;
-function chips(){
-  $('#hobbies').innerHTML=[...new Set([...HOB,...sel.hobbies])].map(x=>chip(x,sel.hobbies.has(x),'h')).join('');
-  $('#traits').innerHTML=TR.map(x=>chip(x,sel.traits.has(x),'t')).join('');
-  $('#looking').innerHTML=LOOK.map(x=>chip(x,sel.looking===x,'l')).join('')}
+function chips(){$('#hobbies').innerHTML=[...new Set([...HOB,...sel.hobbies])].map(x=>chip(x,sel.hobbies.has(x),'h')).join('');
+  $('#traits').innerHTML=TR.map(x=>chip(x,sel.traits.has(x),'t')).join('');$('#looking').innerHTML=LOOK.map(x=>chip(x,sel.looking===x,'l')).join('')}
 $('#profile').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const{k,v}=b.dataset;
   if(k==='l')sel.looking=v;else{const s=k==='h'?sel.hobbies:sel.traits;s.has(v)?s.delete(v):s.add(v)}chips()};
 $('#hobx').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim().slice(0,30);if(v){sel.hobbies.add(v);e.target.value='';chips()}}};
 function fill(){const m=data.me;sel.hobbies=new Set(m.hobbies||[]);sel.traits=new Set(m.traits||[]);sel.looking=m.looking||'';
-  $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#pcancel').classList.toggle('hide',!m.done);chips();loadEd(m.photo)}
-$('#pbtn').onclick=async()=>{$('#perr').textContent='';$('#pbtn').disabled=true;
-  try{await api('profile',{id:localStorage.dm_id,photo:ed.dirty?$('#pedit').toDataURL('image/jpeg',.75):undefined,hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,traits:[...sel.traits],note:$('#note').value});
+  $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#pcancel').classList.toggle('hide',!m.done);
+  $('#ph').textContent=m.done?'Edit your profile':'Step 3 of 3 · About you';chips();loadEd(m.photo)}
+$('#pbtn').onclick=async()=>{$('#perr').textContent='';
+  if(!ed.img){$('#perr').textContent='Please add your photo to continue';return}
+  $('#pbtn').disabled=true;
+  try{await api('profile',{photo:ed.dirty?$('#pedit').toDataURL('image/jpeg',.75):undefined,hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,traits:[...sel.traits],note:$('#note').value});
     editing=false;await refresh()}catch(e){$('#perr').textContent=e.message}$('#pbtn').disabled=false};
 $('#pcancel').onclick=()=>{editing=false;refresh()};
-$('#edit').onclick=()=>{editing=true;fill();show('profile')};
+$('#edit').onclick=()=>{editing=true;fill();show('profile');window.scrollTo(0,0)};
 
-// ---- photo editor (zoom + rotate, square crop)
+// photo editor (zoom + rotate, square crop)
+let ed={img:null,rot:0,zoom:1,dirty:false};
 function drawEd(){const x=$('#pedit').getContext('2d');x.clearRect(0,0,240,240);if(!ed.img)return;
-  const w=ed.img.width,h=ed.img.height,k=240/Math.min(w,h)*ed.zoom;
-  x.save();x.translate(120,120);x.rotate(ed.rot*Math.PI/2);x.scale(k,k);x.drawImage(ed.img,-w/2,-h/2);x.restore()}
-function loadEd(src){ed={img:null,rot:0,zoom:1,dirty:false};$('#pzoom').value=1;
-  if(!src){drawEd();return}const i=new Image();i.onload=()=>{ed.img=i;drawEd()};i.src=src}
+  const w=ed.img.width,h=ed.img.height,k=240/Math.min(w,h)*ed.zoom;x.save();x.translate(120,120);x.rotate(ed.rot*Math.PI/2);x.scale(k,k);x.drawImage(ed.img,-w/2,-h/2);x.restore()}
+function loadEd(src){ed={img:null,rot:0,zoom:1,dirty:false};$('#pzoom').value=1;if(!src){drawEd();return}const i=new Image();i.onload=()=>{ed.img=i;drawEd()};i.src=src}
 $('#pfile').onchange=e=>{const f=e.target.files[0];if(!f)return;const i=new Image();
-  i.onload=()=>{ed={img:i,rot:0,zoom:1,dirty:true};$('#pzoom').value=1;drawEd()};
-  i.onerror=()=>{$('#perr').textContent='Could not read that image. Try another photo.'};i.src=URL.createObjectURL(f)};
+  i.onload=()=>{ed={img:i,rot:0,zoom:1,dirty:true};$('#pzoom').value=1;drawEd()};i.onerror=()=>{$('#perr').textContent='Could not read that image. Try another photo.'};i.src=URL.createObjectURL(f)};
 $('#pzoom').oninput=e=>{ed.zoom=+e.target.value;ed.dirty=true;drawEd()};
 $('#prot').onclick=()=>{ed.rot=(ed.rot+1)%4;ed.dirty=true;drawEd()};
 
 // ---- main page
-async function refresh(){try{data=await api('matches',null,'?id='+localStorage.dm_id);
-    {const n=data.requests.length;if(prevReq>=0&&n>prevReq)toast('💌 New dandiya request!');prevReq=n}
+async function refresh(){try{data=await api('matches');
+    const n=data.requests.length;if(prevReq>=0&&n>prevReq)toast('💌 New dandiya request!');prevReq=n;
     if(!data.me.done&&!editing){editing=true;fill()}
     if(editing){show('profile');return}
-    if(viewing)return;
+    if(viewing||chatWith)return;
     show('main');draw()}
-  catch(e){if(e.message==='Session expired'){localStorage.removeItem('dm_id');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;show('join')}}}
+  catch(e){if(e.message==='Session expired'){localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;show('join')}}}
 function card(p,extra,btn='',open=false){
   const tags=(p.hobbies||[]).slice(0,6).map(h=>`<span class="tag ${(p.common||[]).includes(h)?'hl':''}">${esc(h)}</span>`).join('');
-  return `<div class="p" ${open?`data-open="${esc(p.id)}" style="cursor:pointer"`:''}>${p.photo?`<img src="${esc(p.photo)}">`:'<div class="ph"></div>'}<div><b>${esc(p.name)}</b>, ${esc(p.age)}<br>${extra}
+  return `<div class="p" ${open?`data-open="${esc(p.id)}" style="cursor:pointer"`:''}><div class="av" style="background-image:url('${esc(p.photo)}')"></div><div class="pi"><b>${esc(p.name)}</b>, ${esc(p.age)}<br>${extra}
     ${p.looking?`<div class="mu">Looking for: ${esc(p.looking)}</div>`:''}${p.likes?`<div class="mu">Likes: ${esc(p.likes)}</div>`:''}
-    ${(p.traits||[]).length?`<div class="mu">Wants someone: ${esc(p.traits.join(', '))}</div>`:''}<div>${tags}</div>
-    ${(p.common||[]).length?`<div class="mu">⭐ ${p.common.length} hobb${p.common.length>1?'ies':'y'} in common</div>`:''}</div>${btn}</div>`}
+    <div>${tags}</div>${(p.common||[]).length?`<div class="mu">⭐ ${p.common.length} hobb${p.common.length>1?'ies':'y'} in common</div>`:''}</div>${btn}</div>`}
 function draw(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='230' height='140'><text transform='rotate(-24 115 70)' x='10' y='80' fill='rgba(255,255,255,.4)' stroke='rgba(0,0,0,.25)' stroke-width='.6' font-size='15' font-family='sans-serif'>${esc(data.me.name)} · ${esc(data.me.id.slice(-4))}</text></svg>`;
+  document.documentElement.style.setProperty('--wm','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');
   $('#hi').textContent='Hi '+data.me.name+' 👋';
   $('#rbox').classList.toggle('hide',!data.requests.length);
   $('#reqs').innerHTML=data.requests.map(r=>card(r,'<b style="color:var(--or)">💌 wants to dandiya with you</b>',`<div style="display:flex;flex-direction:column;gap:6px"><button data-ok="${esc(r.id)}">Approve ✓</button><button class="s" data-no="${esc(r.id)}">Deny ✕</button></div>`)).join('');
@@ -173,69 +204,66 @@ function draw(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
   $('#matches').innerHTML=data.matches.map(m=>card(m,`<span class="dot ${m.online?'on':''}"></span><span class="mu">${m.online?'online':'offline'}</span>${m.unread?` · <b style="color:var(--or)">${m.unread} new</b>`:''}`,`<button data-chat="${esc(m.id)}">💬 Chat</button>`)).join('');
   const list=data.people.filter(p=>p.age>=lo&&p.age<=hi);lastList=list;
   $('#people').innerHTML=list.length?list.map(p=>card(p,`<span class="dot ${p.online?'on':''}"></span><span class="mu">${p.online?'online':'offline'}</span>`,
-    `<button class="${p.liked?'s':''}" data-id="${esc(p.id)}" ${p.liked?'disabled':''}>${p.liked?'Liked':'Like'}</button>`,true)).join(''):'<p class="mu">No one here yet — share the link!</p>'}
-$('#people').onclick=async e=>{
-  const lb=e.target.closest('button[data-id]');
-  if(lb){try{const r=await api('like',{id:localStorage.dm_id,target:lb.dataset.id});toast(r.matched?'🎉 Matched! Open Chat from Your matches.':'Request sent 💌')}catch(x){toast(x.message)}refresh();return}
-  const c=e.target.closest('[data-open]');if(!c)return;
-  const i=lastList.findIndex(p=>p.id===c.dataset.open);if(i<0)return;
+    `<button class="${p.liked?'s':''}" data-id="${esc(p.id)}" ${p.liked?'disabled':''}>${p.liked?'Requested':'Like'}</button>`,true)).join(''):'<p class="mu">No one here yet — share the link!</p>'}
+$('#minA').oninput=$('#maxA').oninput=()=>data&&draw();
+async function ask(id){try{const r=await api('like',{target:id});toast(r.matched?'🎉 Matched! Open Chat from Your matches.':'Request sent 💌')}catch(x){toast(x.message)}refresh()}
+$('#people').onclick=e=>{const lb=e.target.closest('button[data-id]');if(lb){ask(lb.dataset.id);return}
+  const c=e.target.closest('[data-open]');if(!c)return;const i=lastList.findIndex(p=>p.id===c.dataset.open);if(i<0)return;
   view={list:lastList,i};viewing=true;show('view');openP();window.scrollTo(0,0)};
+$('#reqs').onclick=async e=>{const ok=e.target.dataset.ok,t=ok||e.target.dataset.no;if(!t)return;
+  try{await api('respond',{from:t,accept:!!ok});toast(ok?'🎉 Matched! You can chat now.':'Request denied');await refresh()}catch(x){toast(x.message)}};
+$('#matches').onclick=e=>{const id=e.target.dataset.chat;if(id)openChat(id)};
 
 // ---- full profile view (one person at a time)
 const pc=(l,h)=>`<div class="pc"><div class="pl">${l}</div><div class="pt">${h}</div></div>`;
 const tg=(a,c=[])=>a.map(h=>`<span class="tag ${c.includes(h)?'hl':''}">${esc(h)}</span>`).join('');
 function openP(){const p=view.list[view.i],c=p.common||[];
   $('#vcount').textContent=(view.i+1)+' of '+view.list.length;
-  $('#vbody').innerHTML=`<div class="hero">${p.photo?`<img src="${esc(p.photo)}">`:`<div class="hph">${esc((p.name||'?')[0].toUpperCase())}</div>`}
+  $('#vbody').innerHTML=`<div class="hero" style="background-image:url('${esc(p.photo)}')">${p.photo?'':`<div class="hph">${esc((p.name||'?')[0].toUpperCase())}</div>`}<div class="wm"></div>
     <div class="hov"><b>${esc(p.name)}, ${esc(p.age)}</b><div class="mu"><span class="dot ${p.online?'on':''}"></span>${p.online?'online now':'offline'}</div></div></div>`
-    +(p.looking?pc('Looking for',esc(p.looking)):'')
-    +(c.length?pc('⭐ You both love',tg(c,c)):'')
-    +((p.hobbies||[]).length?pc('Hobbies',tg(p.hobbies,c)):'')
-    +(p.likes?pc('I like',esc(p.likes)):'')
-    +(((p.traits||[]).length||p.note)?pc('My ideal dandiya partner',tg(p.traits||[])+(p.note?`<div style="margin-top:8px">${esc(p.note)}</div>`:'')):'');
+    +(p.looking?pc('Looking for',esc(p.looking)):'')+(c.length?pc('⭐ You both love',tg(c,c)):'')+((p.hobbies||[]).length?pc('Hobbies',tg(p.hobbies,c)):'')
+    +(p.likes?pc('I like',esc(p.likes)):'')+(((p.traits||[]).length||p.note)?pc('My ideal dandiya partner',tg(p.traits||[])+(p.note?`<div style="margin-top:8px">${esc(p.note)}</div>`:'')):'');
   const b=$('#vlike');b.disabled=!!p.liked;b.textContent=p.liked?'Requested ✓':'💃 Ask to dandiya'}
-function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,4000)}
-function nextP(){if(view.i<view.list.length-1){view.i++;openP();window.scrollTo(0,0)}
-  else{viewing=false;show('main');draw();toast("That's everyone for now 🪔")}}
-$('#vback').onclick=()=>{viewing=false;show('main');draw()};
-$('#vpass').onclick=nextP;
+function nextP(){if(view.i<view.list.length-1){view.i++;openP();window.scrollTo(0,0)}else{viewing=false;show('main');draw();toast("That's everyone for now 🪔")}}
+$('#vback').onclick=()=>{viewing=false;show('main');draw()};$('#vpass').onclick=nextP;
 $('#vlike').onclick=async()=>{const p=view.list[view.i];if(p.liked)return;$('#vlike').disabled=true;
-  try{const r=await api('like',{id:localStorage.dm_id,target:p.id});p.liked=true;
-    data=await api('matches',null,'?id='+localStorage.dm_id);
-    toast(r.matched?"🎉 It's a match with "+p.name+"! Open Chat from Your matches.":'Request sent to '+p.name+' 💌');
-    nextP()}catch(e){toast(e.message);$('#vlike').disabled=false}};
-$('#minA').oninput=$('#maxA').oninput=()=>data&&draw();
-function start(){show('');refresh();clearInterval(timer);timer=setInterval(refresh,15000)}
+  try{const r=await api('like',{target:p.id});p.liked=true;data=await api('matches');
+    toast(r.matched?"🎉 It's a match with "+p.name+"! Open Chat from Your matches.":'Request sent to '+p.name+' 💌');nextP()}catch(e){toast(e.message);$('#vlike').disabled=false}};
 
-// ---- requests + chat
-$('#reqs').onclick=async e=>{const ok=e.target.dataset.ok,no=e.target.dataset.no,t=ok||no;if(!t)return;
-  try{await api('respond',{id:localStorage.dm_id,from:t,accept:!!ok});toast(ok?'🎉 Matched! You can chat now.':'Request denied');await refresh()}catch(x){toast(x.message)}};
-$('#matches').onclick=e=>{const id=e.target.dataset.chat;if(id)openChat(id)};
+// ---- chat
 async function openChat(id){const m=data.matches.find(x=>x.id===id);if(!m)return;
-  chatWith=m;viewing=true;lastCount=-1;show('chat');$('#chead').textContent=m.name+', '+m.age;$('#cmsgs').innerHTML='';
+  chatWith=m;lastCount=-1;show('chat');$('#chead').textContent=m.name+', '+m.age;$('#cmsgs').innerHTML='';
   await loadChat(true);clearInterval(chatTimer);chatTimer=setInterval(()=>loadChat(false),3000);window.scrollTo(0,0)}
-function closeChat(){clearInterval(chatTimer);chatWith=null;viewing=false;show('main');refresh()}
+function closeChat(){clearInterval(chatTimer);chatWith=null;refresh()}
 async function loadChat(force){if(!chatWith)return;
-  try{const d=await api('chat',null,'?id='+localStorage.dm_id+'&with='+chatWith.id);
+  try{const d=await api('chat',null,'?with='+chatWith.id);
     if(!force&&d.msgs.length===lastCount)return;lastCount=d.msgs.length;
     const box=$('#cmsgs'),end=force||box.scrollHeight-box.scrollTop-box.clientHeight<60;
-    box.innerHTML=d.msgs.length?d.msgs.map(x=>`<div class="m ${x.f===localStorage.dm_id?'me':''}">${esc(x.t)}</div>`).join(''):'<p class="mu" style="text-align:center">Say hi 👋 and plan your dandiya night!</p>';
+    box.innerHTML=d.msgs.length?d.msgs.map(x=>`<div class="m ${x.f===data.me.id?'me':''}">${esc(x.t)}</div>`).join(''):'<p class="mu" style="text-align:center">Say hi 👋 and plan your dandiya night!</p>';
     if(end)box.scrollTop=box.scrollHeight}
   catch(e){if(/Not matched/.test(e.message)){closeChat();toast('This match is no longer available')}}}
 async function sendMsg(){const i=$('#cin'),t=i.value.trim();if(!t||!chatWith)return;i.value='';
-  try{await api('send',{id:localStorage.dm_id,to:chatWith.id,text:t});await loadChat(true)}catch(e){toast(e.message)}}
+  try{await api('send',{to:chatWith.id,text:t});await loadChat(true)}catch(e){toast(e.message)}}
 $('#csend').onclick=sendMsg;$('#cin').onkeydown=e=>{if(e.key==='Enter')sendMsg()};$('#cback').onclick=closeChat;
 $('#cun').onclick=async()=>{if(!chatWith||!confirm('Unmatch '+chatWith.name+'? The chat will be deleted.'))return;
-  try{await api('unmatch',{id:localStorage.dm_id,with:chatWith.id});toast('Unmatched');closeChat()}catch(e){toast(e.message)}};
+  try{await api('unmatch',{with:chatWith.id});toast('Unmatched');closeChat()}catch(e){toast(e.message)}};
+function start(){show('');refresh();clearInterval(timer);timer=setInterval(refresh,15000)}
 
 // ---- admin (#admin)
 let apw='';
 async function loadAdmin(remove){try{const d=await api('admin',{password:apw,remove});$('#alogin').classList.add('hide');$('#adash').classList.remove('hide');
   $('#tot').textContent=d.total;$('#onl').textContent=d.online;
-  $('#rows').innerHTML=d.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.age)}</td><td>${esc(u.phone)}</td><td><span class="dot ${u.online?'on':''}"></span>${u.online?'online':'offline'}</td><td><button class="s" data-rm="${esc(u.id)}">✕</button></td></tr>`).join('')}
+  $('#rows').innerHTML=d.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.age)}</td><td>${esc(u.email||'—')}</td><td>${esc(u.phone)}</td><td><span class="dot ${u.online?'on':''}"></span>${u.online?'online':'offline'}</td><td><button class="s" data-rm="${esc(u.id)}">✕</button></td></tr>`).join('')}
   catch(e){$('#aerr').textContent=e.message;apw=''}}
 $('#abtn').onclick=()=>{apw=$('#pw').value;loadAdmin();setInterval(()=>apw&&loadAdmin(),10000)};
 $('#rows').onclick=e=>{const id=e.target.dataset.rm;if(id&&confirm('Remove this user?'))loadAdmin(id)};
 
-if(location.hash==='#admin')show('admin');else localStorage.dm_id?start():show('join');
+// ---- photo protection (deterrents only)
+document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('dragstart',e=>e.preventDefault());
+const shield=on=>document.body.classList.toggle('shield',on);
+document.addEventListener('visibilitychange',()=>shield(document.hidden));
+window.addEventListener('blur',()=>shield(true));window.addEventListener('focus',()=>shield(false));
+document.addEventListener('keyup',e=>{if(e.key==='PrintScreen'){shield(true);try{navigator.clipboard.writeText(' ')}catch(x){}setTimeout(()=>shield(document.hidden),2500)}});
+
+if(location.hash==='#admin')show('admin');else localStorage.dm_token?start():show('join');
 </script></body></html>
