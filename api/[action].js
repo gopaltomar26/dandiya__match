@@ -1,7 +1,8 @@
 const { Redis } = require('@upstash/redis');
+const env = (suffix) => process.env[Object.keys(process.env).find((k) => k.endsWith(suffix))];
 const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN,
+  url: env('KV_REST_API_URL') || env('UPSTASH_REDIS_REST_URL'),
+  token: env('KV_REST_API_TOKEN') || env('UPSTASH_REDIS_REST_TOKEN'),
 });
 const ONLINE_MS = 45000;
 const pub = (u) => ({ id: u.id, name: u.name, age: u.age, photo: u.photo });
