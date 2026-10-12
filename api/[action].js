@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
       const name = String(body.name || '').trim().slice(0, 40);
       const age = parseInt(body.age, 10);
       const phone = String(body.phone || '').replace(/[^\d+]/g, '').slice(0, 15);
-      if (!name || !(age >= 14 && age <= 100) || phone.length < 8)
+      if (!name || !(age >= 14 && age <= 100) || !/^\+91[6-9]\d{9}$/.test(phone))
         return res.status(400).json({ error: 'Enter a valid name, age and phone number' });
       const photo = typeof body.photo === 'string' && body.photo.startsWith('data:image/') && body.photo.length < 150000 ? body.photo : '';
       const id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
