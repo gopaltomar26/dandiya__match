@@ -6,13 +6,13 @@
 <style>
 :root{--bg:#1c120d;--card:#2a1b14;--line:#4a3125;--or:#ff8a3d;--tx:#f5e9df;--mu:#b9a394;--wm:none}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;padding:20px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-input{-webkit-user-select:text;user-select:text}@media print{body{display:none!important}}
+input,textarea{-webkit-user-select:text;user-select:text}@media print{body{display:none!important}}
 main{max-width:640px;margin:auto}h2{margin:0 0 8px}
 .logo{display:flex;align-items:center;gap:8px;font-weight:400;line-height:1.1;margin:0}
 .logo span{font-family:'Great Vibes','Brush Script MT','Segoe Script',cursive;font-size:52px;padding:2px 6px 6px 0;background:linear-gradient(90deg,#ff8a3d,#ff4d8d 55%,#ffd93d);-webkit-background-clip:text;background-clip:text;color:transparent}
 .stick{flex:none;filter:drop-shadow(0 2px 6px #ff8a3d55)}p.sub{color:var(--mu);margin:4px 0 16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
-input{width:100%;padding:10px;margin:6px 0;background:#1c120d;color:var(--tx);border:1px solid var(--line);border-radius:8px;font-size:16px}
+input,textarea,select{width:100%;padding:10px;margin:6px 0;background:#1c120d;color:var(--tx);border:1px solid var(--line);border-radius:8px;font-size:16px;font-family:inherit}
 button{background:var(--or);color:#1c120d;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;font-size:15px}
 button.s{background:transparent;color:var(--or);border:1px solid var(--or)}button:disabled{opacity:.5}
 .chip{background:transparent;color:var(--tx);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:500;margin:4px 6px 4px 0;font-size:14px}.chip.on{background:var(--or);color:#1c120d;border-color:var(--or);font-weight:700}
@@ -48,8 +48,8 @@ body.shield .hero,body.shield .av{filter:blur(40px)}
 <circle cx="32" cy="21" r="1.7" fill="#fff"/><circle cx="32" cy="40" r="1.7" fill="#fff"/><circle cx="32" cy="6" r="2" fill="#ff3d8b"/><circle cx="32" cy="58" r="2" fill="#ff3d8b"/></g></svg><span>Dandiya Match</span></h1><p class="sub">Find your dandiya partner for the night</p>
 
 <section id="join" class="card hide">
-  <h2>Step 1 of 3 · Your details</h2>
-  <input id="name" placeholder="Your name" maxlength="40"><input id="age" type="number" placeholder="Age" min="14" max="100">
+  <h2>Step 1 of 3 · Your details</h2><p class="mu">You must be 18 or older to join.</p>
+  <input id="name" placeholder="Your name" maxlength="40"><input id="age" type="number" placeholder="Age" min="18" max="100">
   <div class="pf"><span>+91</span><input id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number"></div>
   <p class="err" id="jerr"></p><button id="jbtn">Next →</button>
   <p class="mu">Already have an account? <a href="#" id="tologin" style="color:var(--or)">Log in with Gmail</a></p>
@@ -67,19 +67,35 @@ body.shield .hero,body.shield .av{filter:blur(40px)}
   <h2 id="ph">Step 3 of 3 · About you</h2>
   <label class="mu">Your photo (required)</label>
   <div class="row" style="align-items:flex-start"><canvas id="pedit" width="240" height="240"></canvas>
-    <div><input id="pfile" type="file" accept="image/*"><label class="mu">Zoom</label><input id="pzoom" type="range" min="1" max="3" step="0.05" value="1" style="padding:0"><button type="button" class="s" id="prot">⟳ Rotate</button></div></div>
-  <label class="mu">Your hobbies (pick a few)</label><div id="hobbies"></div>
+    <div><input id="pfile" type="file" accept="image/*"><button type="button" class="s" id="prot">⟳ Rotate</button></div></div>
+
+  <label class="mu">I am</label><div id="gender"></div>
+  <p class="mu" style="font-size:12px;margin:4px 0 0">You will only see people of the opposite gender.</p>
+  <label class="mu">Height (cm)</label><input id="height" type="number" inputmode="numeric" min="120" max="230" placeholder="e.g. 170">
+  <label class="mu">📍 Current location</label>
+  <div class="row"><button type="button" class="s" id="locbtn">Use my current location</button><span class="mu" id="locst"></span></div>
+  <p class="mu" style="font-size:12px;margin:4px 0 0">Used to show people near you. Others only see an approximate distance, never your exact spot.</p>
+
+  <label class="mu">About me — write at least 2 lines</label>
+  <textarea id="about" rows="4" maxlength="500" placeholder="Line 1: who you are and what you do&#10;Line 2: what makes you fun on a dandiya night"></textarea>
+  <div class="mu" id="aboutc"></div>
+
+  <label class="mu">Dandiya level</label><div id="level"></div>
+  <label class="mu">Food</label><div id="diet"></div>
+  <label class="mu">Hobbies — pick at least 3</label><div id="hobbies"></div>
   <input id="hobx" maxlength="30" placeholder="Other hobby — type and press Enter">
   <label class="mu">Things you like</label><input id="likes" maxlength="200" placeholder="e.g. street food, Bollywood, garba nights">
   <label class="mu">What are you looking for?</label><div id="looking"></div>
-  <label class="mu">Your ideal partner is…</label><div id="traits"></div>
+  <label class="mu">Also open to (shown only if you both pick the same)</label><div id="open"></div>
+  <p class="mu" style="font-size:12px;margin:4px 0 0">Nobody sees what you picked unless the other person picked it too. Meet in a public place first and tell a friend where you are going.</p>
+  <label class="mu">Your ideal partner is… (pick at least 2)</label><div id="traits"></div>
   <input id="note" maxlength="200" placeholder="Anything else about your ideal partner (optional)">
   <p class="err" id="perr"></p><div class="row"><button id="pbtn">Save &amp; find matches</button><button class="s hide" id="pcancel">Cancel</button></div>
 </section>
 
 <section id="main" class="hide">
   <div class="card"><div class="row"><b id="hi"></b><button class="s" id="edit" style="flex:none">Edit profile</button><button class="s" id="logout" style="flex:none">Log out</button></div>
-    <div class="row" style="margin-top:8px"><input id="minA" type="number" placeholder="Min age"><input id="maxA" type="number" placeholder="Max age"></div></div>
+    <div class="row" style="margin-top:8px"><input id="minA" type="number" placeholder="Min age"><input id="maxA" type="number" placeholder="Max age"><select id="radius"><option value="7">Within 7 km</option><option value="15">Within 15 km</option><option value="30">Within 30 km</option><option value="50">Within 50 km</option></select></div></div>
   <div class="card hide" id="rbox"><b>💌 Dandiya requests</b><div id="reqs"></div></div>
   <div class="card hide" id="mbox"><b>💬 Your matches</b><div id="matches"></div></div>
   <div class="card"><b>People here</b> <span class="mu">(most in common first)</span><div id="people"></div></div>
@@ -111,13 +127,13 @@ async function api(a,body,q=''){const h={'x-token':localStorage.dm_token||''};if
   const d=await r.json().catch(()=>({error:'Server error'}));if(!r.ok)throw new Error(d.error||'Error');return d}
 const show=id=>['join','auth','profile','main','view','chat','admin'].forEach(x=>$('#'+x).classList.toggle('hide',x!==id));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,4000)}
-let data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[],chatWith=null,chatTimer,lastCount=-1,prevReq=-1,reg=null,ticket='',otpSent=false,loginMode=false;
+let data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[],chatWith=null,chatTimer,lastCount=-1,prevReq=-1,reg=null,ticket='',otpSent=false,loginMode=false,synced=false,radius=+localStorage.dm_r||7;
 
 // ---- Step 1: name, age, phone
 $('#phone').oninput=e=>{let v=e.target.value.replace(/\D/g,'');if(v.length>10&&v.startsWith('91'))v=v.slice(2);e.target.value=v.slice(0,10)};
 $('#jbtn').onclick=()=>{$('#jerr').textContent='';const name=$('#name').value.trim(),age=+$('#age').value,ph=$('#phone').value;
   if(!name){$('#jerr').textContent='Please enter your name';return}
-  if(!(age>=14&&age<=100)){$('#jerr').textContent='Enter a valid age';return}
+  if(!(age>=18&&age<=100)){$('#jerr').textContent='You must be 18 or older to join';return}
   if(!/^[6-9]\d{9}$/.test(ph)){$('#jerr').textContent='Enter a valid 10-digit Indian mobile number';return}
   reg={name,age,phone:'+91'+ph};
   if(ticket)doJoin('#jerr');else openAuth(false)};
@@ -147,52 +163,88 @@ $('#em').onkeydown=$('#otp').onkeydown=e=>{if(e.key==='Enter')$('#ubtn').click()
 $('#resend').onclick=e=>{e.preventDefault();$('#em').readOnly=false;sendOtp()};
 $('#chg').onclick=e=>{e.preventDefault();resetAuth()};
 $('#aback').onclick=()=>show('join');
-$('#logout').onclick=async()=>{try{await api('logout',{})}catch(e){}localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;data=null;reg=null;ticket='';show('join')};
+$('#logout').onclick=async()=>{try{await api('logout',{})}catch(e){}localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;data=null;reg=null;ticket='';synced=false;show('join')};
 
-// ---- Step 3: photo, hobbies, likes, partner type
-const HOB=['Dancing','Music','Travelling','Movies','Cooking','Fitness','Photography','Reading','Gaming','Art'];
+// ---- Step 3: photo, about, hobbies, partner type
+const HOBG={'Dance & music':['Dandiya / Garba','Bollywood dance','Classical dance','Singing','Playing an instrument','Live concerts'],
+ 'Food & drinks':['Street food','Cooking','Baking','Café hopping','Trying new restaurants'],
+ 'Active':['Gym','Yoga','Running','Cricket','Badminton','Trekking','Cycling','Swimming'],
+ 'Creative':['Photography','Painting','Writing','Fashion & styling','Reels & vlogs'],
+ 'Chill & fun':['Movies & series','Reading','Gaming','Board games','Travel','Road trips','Pets','Meditation']};
+const GEN=['Man','Woman'],LVL=['Beginner','Comfortable','Dandiya pro'],DIET=['Vegetarian','Non-vegetarian','Eggetarian','Jain','Vegan'];
 const LOOK=['Dandiya partner for the night','New friends','Something serious'];
-const TR=['Fun & energetic','Good dancer','Caring','Funny','Adventurous','Traditional','Ambitious','Calm & polite'];
-const sel={hobbies:new Set(),traits:new Set(),looking:''};
-const chip=(x,on,k)=>`<button type="button" class="chip ${on?'on':''}" data-k="${k}" data-v="${esc(x)}">${esc(x)}</button>`;
-function chips(){$('#hobbies').innerHTML=[...new Set([...HOB,...sel.hobbies])].map(x=>chip(x,sel.hobbies.has(x),'h')).join('');
-  $('#traits').innerHTML=TR.map(x=>chip(x,sel.traits.has(x),'t')).join('');$('#looking').innerHTML=LOOK.map(x=>chip(x,sel.looking===x,'l')).join('')}
-$('#profile').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const{k,v}=b.dataset;
-  if(k==='l')sel.looking=v;else{const s=k==='h'?sel.hobbies:sel.traits;s.has(v)?s.delete(v):s.add(v)}chips()};
+const OPEN=['Dating','One-night stay','Coffee or dinner meetup','Practice dandiya together'];
+const TR=['Fun & energetic','Great dancer','Caring','Funny','Adventurous','Traditional values','Modern outlook','Ambitious','Calm & polite','Honest','Good listener','Family-oriented','Spiritual','Foodie','Stylish','Respectful','Independent','Romantic','Confident','Emotionally mature'];
+const sel={hobbies:new Set(),traits:new Set(),open:new Set(),looking:'',gender:'',level:'',diet:''};
+let loc=null;
+const chip=(x,on,k,dis=false)=>`<button type="button" class="chip ${on?'on':''}" data-k="${k}" data-v="${esc(x)}" ${dis?'disabled':''}>${esc(x)}</button>`;
+function chips(){const locked=!!(data&&data.me&&data.me.gender);
+  $('#gender').innerHTML=GEN.map(x=>chip(x,sel.gender===x,'g',locked&&sel.gender!==x)).join('')+(locked?' <span class="mu">(can\u2019t be changed)</span>':'');
+  $('#level').innerHTML=LVL.map(x=>chip(x,sel.level===x,'v')).join('');$('#diet').innerHTML=DIET.map(x=>chip(x,sel.diet===x,'d')).join('');
+  const known=new Set(Object.values(HOBG).flat()),own=[...sel.hobbies].filter(x=>!known.has(x));
+  $('#hobbies').innerHTML=Object.entries(HOBG).map(([g,a])=>`<div class="mu" style="margin-top:8px">${g}</div>`+a.map(x=>chip(x,sel.hobbies.has(x),'h')).join('')).join('')
+    +(own.length?'<div class="mu" style="margin-top:8px">Your own</div>'+own.map(x=>chip(x,true,'h')).join(''):'');
+  $('#looking').innerHTML=LOOK.map(x=>chip(x,sel.looking===x,'l')).join('');$('#open').innerHTML=OPEN.map(x=>chip(x,sel.open.has(x),'o')).join('');
+  $('#traits').innerHTML=TR.map(x=>chip(x,sel.traits.has(x),'t')).join('')}
+$('#profile').onclick=e=>{const b=e.target.closest('.chip');if(!b||b.disabled)return;const{k,v}=b.dataset;
+  if(k==='g'){if(!(data&&data.me.gender))sel.gender=v}else if(k==='l')sel.looking=v;
+  else if(k==='v')sel.level=sel.level===v?'':v;else if(k==='d')sel.diet=sel.diet===v?'':v;
+  else{const s=k==='h'?sel.hobbies:k==='t'?sel.traits:sel.open;s.has(v)?s.delete(v):s.add(v)}chips()};
 $('#hobx').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim().slice(0,30);if(v){sel.hobbies.add(v);e.target.value='';chips()}}};
-function fill(){const m=data.me;sel.hobbies=new Set(m.hobbies||[]);sel.traits=new Set(m.traits||[]);sel.looking=m.looking||'';
-  $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#pcancel').classList.toggle('hide',!m.done);
-  $('#ph').textContent=m.done?'Edit your profile':'Step 3 of 3 · About you';chips();loadEd(m.photo)}
-$('#pbtn').onclick=async()=>{$('#perr').textContent='';
-  if(!ed.img){$('#perr').textContent='Please add your photo to continue';return}
+const aboutLines=()=>$('#about').value.split('\n').map(x=>x.trim()).filter(x=>x.length>=8);
+function aboutHint(){const n=aboutLines().length;$('#aboutc').textContent=n>=2?'✓ Looks good':n+'/2 lines — press Enter for a new line (each line at least 8 characters)'}
+$('#about').oninput=aboutHint;
+function getLoc(){return new Promise((ok,no)=>{if(!navigator.geolocation)return no(new Error('Location is not supported on this device'));
+  navigator.geolocation.getCurrentPosition(p=>ok({lat:+p.coords.latitude.toFixed(3),lng:+p.coords.longitude.toFixed(3)}),
+    ()=>no(new Error('Please allow location access in your browser so we can find people near you')),{timeout:15000,maximumAge:60000})})}
+$('#locbtn').onclick=async()=>{$('#perr').textContent='';$('#locst').textContent='Locating…';
+  try{loc=await getLoc();$('#locst').textContent='✓ Location captured'}catch(e){$('#locst').textContent='';$('#perr').textContent=e.message}};
+async function syncLoc(){try{if(!navigator.permissions)return;const s=await navigator.permissions.query({name:'geolocation'});if(s.state!=='granted')return;await api('loc',await getLoc())}catch(e){}}
+function fill(){const m=data.me;sel.hobbies=new Set(m.hobbies||[]);sel.traits=new Set(m.traits||[]);sel.open=new Set(m.open||[]);
+  sel.looking=m.looking||'';sel.gender=m.gender||'';sel.level=m.level||'';sel.diet=m.diet||'';loc=null;
+  $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#about').value=m.about||'';$('#height').value=m.height||'';
+  $('#locst').textContent=m.hasLoc?'✓ Saved (tap to update)':'';$('#pcancel').classList.toggle('hide',!m.done);
+  $('#ph').textContent=m.done?'Edit your profile':'Step 3 of 3 · About you';aboutHint();chips();loadEd(m.photo)}
+$('#pbtn').onclick=async()=>{const er=t=>{$('#perr').textContent=t};er('');const h=+$('#height').value;
+  if(!ed.img)return er('Please add your photo to continue');
+  if(!sel.gender)return er('Please choose Man or Woman');
+  if(!(h>=120&&h<=230))return er('Enter your height in cm (120 to 230)');
+  if(!loc&&!data.me.hasLoc)return er('Please tap "Use my current location"');
+  if(aboutLines().length<2)return er('Write at least 2 lines about yourself');
+  if(sel.hobbies.size<3)return er('Pick at least 3 hobbies');
+  if(!sel.looking)return er('Choose what you are looking for');
+  if(sel.traits.size<2)return er('Pick at least 2 things you want in a partner');
   $('#pbtn').disabled=true;
-  try{await api('profile',{photo:ed.dirty?$('#pedit').toDataURL('image/jpeg',.75):undefined,hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,traits:[...sel.traits],note:$('#note').value});
-    editing=false;await refresh()}catch(e){$('#perr').textContent=e.message}$('#pbtn').disabled=false};
+  try{await api('profile',{photo:ed.dirty?$('#pedit').toDataURL('image/jpeg',.75):undefined,gender:sel.gender,height:h,...(loc||{}),about:$('#about').value,level:sel.level,diet:sel.diet,
+      hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,open:[...sel.open],traits:[...sel.traits],note:$('#note').value});
+    editing=false;await refresh()}catch(e){er(e.message)}$('#pbtn').disabled=false};
 $('#pcancel').onclick=()=>{editing=false;refresh()};
 $('#edit').onclick=()=>{editing=true;fill();show('profile');window.scrollTo(0,0)};
 
-// photo editor (zoom + rotate, square crop)
+// photo editor (rotate + square crop)
 let ed={img:null,rot:0,zoom:1,dirty:false};
 function drawEd(){const x=$('#pedit').getContext('2d');x.clearRect(0,0,240,240);if(!ed.img)return;
-  const w=ed.img.width,h=ed.img.height,k=240/Math.min(w,h)*ed.zoom;x.save();x.translate(120,120);x.rotate(ed.rot*Math.PI/2);x.scale(k,k);x.drawImage(ed.img,-w/2,-h/2);x.restore()}
-function loadEd(src){ed={img:null,rot:0,zoom:1,dirty:false};$('#pzoom').value=1;if(!src){drawEd();return}const i=new Image();i.onload=()=>{ed.img=i;drawEd()};i.src=src}
+  const w=ed.img.width,h=ed.img.height,k=240/Math.min(w,h);x.save();x.translate(120,120);x.rotate(ed.rot*Math.PI/2);x.scale(k,k);x.drawImage(ed.img,-w/2,-h/2);x.restore()}
+function loadEd(src){ed={img:null,rot:0,zoom:1,dirty:false};if(!src){drawEd();return}const i=new Image();i.onload=()=>{ed.img=i;drawEd()};i.src=src}
 $('#pfile').onchange=e=>{const f=e.target.files[0];if(!f)return;const i=new Image();
-  i.onload=()=>{ed={img:i,rot:0,zoom:1,dirty:true};$('#pzoom').value=1;drawEd()};i.onerror=()=>{$('#perr').textContent='Could not read that image. Try another photo.'};i.src=URL.createObjectURL(f)};
-$('#pzoom').oninput=e=>{ed.zoom=+e.target.value;ed.dirty=true;drawEd()};
+  i.onload=()=>{ed={img:i,rot:0,zoom:1,dirty:true};drawEd()};i.onerror=()=>{$('#perr').textContent='Could not read that image. Try another photo.'};i.src=URL.createObjectURL(f)};
 $('#prot').onclick=()=>{ed.rot=(ed.rot+1)%4;ed.dirty=true;drawEd()};
 
 // ---- main page
-async function refresh(){try{data=await api('matches');
+async function refresh(){try{data=await api('matches',null,'?r='+radius);
     const n=data.requests.length;if(prevReq>=0&&n>prevReq)toast('💌 New dandiya request!');prevReq=n;
     if(!data.me.done&&!editing){editing=true;fill()}
     if(editing){show('profile');return}
     if(viewing||chatWith)return;
-    show('main');draw()}
+    show('main');draw();if(!synced){synced=true;syncLoc()}}
   catch(e){if(e.message==='Session expired'){localStorage.removeItem('dm_token');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;chatWith=null;show('join')}}}
+const kmTxt=p=>p.km==null?'':'📍 ~'+p.km+' km away';
 function card(p,extra,btn='',open=false){
   const tags=(p.hobbies||[]).slice(0,6).map(h=>`<span class="tag ${(p.common||[]).includes(h)?'hl':''}">${esc(h)}</span>`).join('');
+  const meta=[p.height?p.height+' cm':'',kmTxt(p)].filter(Boolean).join(' · '),first=(p.about||'').split('\n')[0];
   return `<div class="p" ${open?`data-open="${esc(p.id)}" style="cursor:pointer"`:''}><div class="av" style="background-image:url('${esc(p.photo)}')"></div><div class="pi"><b>${esc(p.name)}</b>, ${esc(p.age)}<br>${extra}
-    ${p.looking?`<div class="mu">Looking for: ${esc(p.looking)}</div>`:''}${p.likes?`<div class="mu">Likes: ${esc(p.likes)}</div>`:''}
+    ${meta?`<div class="mu">${meta}</div>`:''}${(p.mutual||[]).length?`<div style="color:var(--or);font-size:14px">💞 Both open to: ${esc(p.mutual.join(', '))}</div>`:''}
+    ${first?`<div class="mu">${esc(first.slice(0,90))}${first.length>90?'…':''}</div>`:''}${p.looking?`<div class="mu">Looking for: ${esc(p.looking)}</div>`:''}
     <div>${tags}</div>${(p.common||[]).length?`<div class="mu">⭐ ${p.common.length} hobb${p.common.length>1?'ies':'y'} in common</div>`:''}</div>${btn}</div>`}
 function draw(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
   const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='230' height='140'><text transform='rotate(-24 115 70)' x='10' y='80' fill='rgba(255,255,255,.4)' stroke='rgba(0,0,0,.25)' stroke-width='.6' font-size='15' font-family='sans-serif'>${esc(data.me.name)} · ${esc(data.me.id.slice(-4))}</text></svg>`;
@@ -204,8 +256,9 @@ function draw(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
   $('#matches').innerHTML=data.matches.map(m=>card(m,`<span class="dot ${m.online?'on':''}"></span><span class="mu">${m.online?'online':'offline'}</span>${m.unread?` · <b style="color:var(--or)">${m.unread} new</b>`:''}`,`<button data-chat="${esc(m.id)}">💬 Chat</button>`)).join('');
   const list=data.people.filter(p=>p.age>=lo&&p.age<=hi);lastList=list;
   $('#people').innerHTML=list.length?list.map(p=>card(p,`<span class="dot ${p.online?'on':''}"></span><span class="mu">${p.online?'online':'offline'}</span>`,
-    `<button class="${p.liked?'s':''}" data-id="${esc(p.id)}" ${p.liked?'disabled':''}>${p.liked?'Requested':'Like'}</button>`,true)).join(''):'<p class="mu">No one here yet — share the link!</p>'}
+    `<button class="${p.liked?'s':''}" data-id="${esc(p.id)}" ${p.liked?'disabled':''}>${p.liked?'Requested':'Like'}</button>`,true)).join(''):`<p class="mu">No one within ${radius} km yet — try a wider distance, or share the link!</p>`}
 $('#minA').oninput=$('#maxA').oninput=()=>data&&draw();
+$('#radius').value=radius;$('#radius').onchange=()=>{radius=+$('#radius').value;localStorage.dm_r=radius;refresh()};
 async function ask(id){try{const r=await api('like',{target:id});toast(r.matched?'🎉 Matched! Open Chat from Your matches.':'Request sent 💌')}catch(x){toast(x.message)}refresh()}
 $('#people').onclick=e=>{const lb=e.target.closest('button[data-id]');if(lb){ask(lb.dataset.id);return}
   const c=e.target.closest('[data-open]');if(!c)return;const i=lastList.findIndex(p=>p.id===c.dataset.open);if(i<0)return;
@@ -217,17 +270,20 @@ $('#matches').onclick=e=>{const id=e.target.dataset.chat;if(id)openChat(id)};
 // ---- full profile view (one person at a time)
 const pc=(l,h)=>`<div class="pc"><div class="pl">${l}</div><div class="pt">${h}</div></div>`;
 const tg=(a,c=[])=>a.map(h=>`<span class="tag ${c.includes(h)?'hl':''}">${esc(h)}</span>`).join('');
+const nl=s=>esc(s).replace(/\n/g,'<br>');
 function openP(){const p=view.list[view.i],c=p.common||[];
+  const facts=[p.height?p.height+' cm tall':'',p.km!=null?'📍 ~'+p.km+' km away':'',p.level?'Dandiya: '+p.level:'',p.diet||''].filter(Boolean);
   $('#vcount').textContent=(view.i+1)+' of '+view.list.length;
   $('#vbody').innerHTML=`<div class="hero" style="background-image:url('${esc(p.photo)}')">${p.photo?'':`<div class="hph">${esc((p.name||'?')[0].toUpperCase())}</div>`}<div class="wm"></div>
     <div class="hov"><b>${esc(p.name)}, ${esc(p.age)}</b><div class="mu"><span class="dot ${p.online?'on':''}"></span>${p.online?'online now':'offline'}</div></div></div>`
+    +((p.mutual||[]).length?pc('💞 You are both open to',tg(p.mutual,p.mutual)):'')+(p.about?pc('About me',nl(p.about)):'')+(facts.length?pc('Quick facts',tg(facts)):'')
     +(p.looking?pc('Looking for',esc(p.looking)):'')+(c.length?pc('⭐ You both love',tg(c,c)):'')+((p.hobbies||[]).length?pc('Hobbies',tg(p.hobbies,c)):'')
     +(p.likes?pc('I like',esc(p.likes)):'')+(((p.traits||[]).length||p.note)?pc('My ideal dandiya partner',tg(p.traits||[])+(p.note?`<div style="margin-top:8px">${esc(p.note)}</div>`:'')):'');
   const b=$('#vlike');b.disabled=!!p.liked;b.textContent=p.liked?'Requested ✓':'💃 Ask to dandiya'}
 function nextP(){if(view.i<view.list.length-1){view.i++;openP();window.scrollTo(0,0)}else{viewing=false;show('main');draw();toast("That's everyone for now 🪔")}}
 $('#vback').onclick=()=>{viewing=false;show('main');draw()};$('#vpass').onclick=nextP;
 $('#vlike').onclick=async()=>{const p=view.list[view.i];if(p.liked)return;$('#vlike').disabled=true;
-  try{const r=await api('like',{target:p.id});p.liked=true;data=await api('matches');
+  try{const r=await api('like',{target:p.id});p.liked=true;data=await api('matches',null,'?r='+radius);
     toast(r.matched?"🎉 It's a match with "+p.name+"! Open Chat from Your matches.":'Request sent to '+p.name+' 💌');nextP()}catch(e){toast(e.message);$('#vlike').disabled=false}};
 
 // ---- chat
