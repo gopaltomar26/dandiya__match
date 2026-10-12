@@ -27,6 +27,7 @@ module.exports = async (req, res) => {
       if (!name || !(age >= 14 && age <= 100) || !/^\+91[6-9]\d{9}$/.test(phone))
         return res.status(400).json({ error: 'Enter a valid name, age and Indian mobile number' });
       const photo = typeof body.photo === 'string' && body.photo.startsWith('data:image/') && body.photo.length < 150000 ? body.photo : '';
+      if (!photo) return res.status(400).json({ error: 'Please upload a photo' });
       const id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
       const ua = String(req.headers['user-agent'] || '');
       const device = /ipad|tablet/i.test(ua) ? 'Tablet' : /mobi|android|iphone/i.test(ua) ? 'Mobile' : 'Desktop';
