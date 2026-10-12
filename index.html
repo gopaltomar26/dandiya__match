@@ -30,6 +30,8 @@ label.mu{display:block;margin-top:14px}
 .logo{display:flex;align-items:center;gap:8px;font-weight:400;line-height:1.1}
 .logo span{font-family:'Great Vibes','Brush Script MT','Segoe Script',cursive;font-size:52px;padding:2px 6px 6px 0;background:linear-gradient(90deg,#ff8a3d,#ff4d8d 55%,#ffd93d);-webkit-background-clip:text;background-clip:text;color:transparent}
 .stick{flex:none;filter:drop-shadow(0 2px 6px #ff8a3d55)}
+#pedit{width:140px;height:140px;border-radius:14px;background:#1c120d;border:1px solid var(--line);flex:none}
+.m{max-width:80%;padding:8px 12px;border-radius:14px;background:#3a261c;align-self:flex-start;word-break:break-word}.m.me{align-self:flex-end;background:var(--or);color:#1c120d}
 .hide{display:none}
 </style></head><body><main>
 <h1 class="logo"><svg class="stick" viewBox="0 0 64 64" width="58" height="58" aria-hidden="true">
@@ -52,6 +54,9 @@ label.mu{display:block;margin-top:14px}
 
 <section id="profile" class="card hide">
   <h2>Tell us about you</h2>
+  <label class="mu">Your photo</label>
+  <div class="row" style="align-items:flex-start"><canvas id="pedit" width="240" height="240"></canvas>
+    <div><input id="pfile" type="file" accept="image/*"><label class="mu">Zoom</label><input id="pzoom" type="range" min="1" max="3" step="0.05" value="1" style="padding:0"><button type="button" class="s" id="prot">⟳ Rotate</button></div></div>
   <label class="mu">Your hobbies (pick a few)</label><div id="hobbies"></div>
   <input id="hobx" maxlength="30" placeholder="Other hobby — type and press Enter">
   <label class="mu">Things you like</label>
@@ -66,7 +71,8 @@ label.mu{display:block;margin-top:14px}
 <section id="main" class="hide">
   <div class="card"><div class="row"><b id="hi"></b><button class="s" id="edit" style="flex:none">Edit profile</button></div>
     <div class="row" style="margin-top:8px"><input id="minA" type="number" placeholder="Min age"><input id="maxA" type="number" placeholder="Max age"></div></div>
-  <div class="card hide" id="mbox"><b>🎉 Mutual matches</b><div id="matches"></div></div>
+  <div class="card hide" id="rbox"><b>💌 Dandiya requests</b><div id="reqs"></div></div>
+  <div class="card hide" id="mbox"><b>💬 Your matches</b><div id="matches"></div></div>
   <div class="card"><b>People here</b> <span class="mu">(most in common first)</span><div id="people"></div></div>
 </section>
 
@@ -74,6 +80,13 @@ label.mu{display:block;margin-top:14px}
   <div class="row" style="margin-bottom:10px"><button class="s" id="vback" style="flex:none">← Back</button><span class="mu" id="vcount" style="text-align:right"></span></div>
   <div id="vbody"></div>
   <div class="row vact"><button class="s" id="vpass">✕ Pass</button><button id="vlike">💃 Ask to dandiya</button></div>
+</section>
+
+<section id="chat" class="hide">
+  <div class="row" style="margin-bottom:10px"><button class="s" id="cback" style="flex:none">← Back</button><b id="chead" style="text-align:center"></b><button class="s" id="cun" style="flex:none">Unmatch</button></div>
+  <div class="card" id="cmsgs" style="height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+  <div class="row"><input id="cin" maxlength="500" placeholder="Type a message…" autocomplete="off"><button id="csend" style="flex:none">Send</button></div>
+  <p class="mu" style="text-align:center;font-size:12px">Keep it friendly — never share OTPs, bank details or money.</p>
 </section>
 
 <section id="admin" class="hide">
@@ -87,8 +100,8 @@ label.mu{display:block;margin-top:14px}
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function api(a,body,q=''){const r=await fetch('/api/'+a+q,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:undefined);
   const d=await r.json().catch(()=>({error:'Server error'}));if(!r.ok)throw new Error(d.error||'Error');return d}
-const show=id=>['join','profile','main','view','admin'].forEach(x=>$('#'+x).classList.toggle('hide',x!==id));
-let photo='',data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[];
+const show=id=>['join','profile','main','view','chat','admin'].forEach(x=>$('#'+x).classList.toggle('hide',x!==id));
+let photo='',data=null,timer,editing=false,viewing=false,view={list:[],i:0},lastList=[],chatWith=null,chatTimer,lastCount=-1,prevReq=-1,ed={img:null,rot:0,zoom:1,dirty:false};
 
 // ---- page 1: basic details
 $('#photo').onchange=e=>{const f=e.target.files[0];if(!f)return;const img=new Image();
@@ -119,20 +132,33 @@ $('#profile').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const{k
   if(k==='l')sel.looking=v;else{const s=k==='h'?sel.hobbies:sel.traits;s.has(v)?s.delete(v):s.add(v)}chips()};
 $('#hobx').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim().slice(0,30);if(v){sel.hobbies.add(v);e.target.value='';chips()}}};
 function fill(){const m=data.me;sel.hobbies=new Set(m.hobbies||[]);sel.traits=new Set(m.traits||[]);sel.looking=m.looking||'';
-  $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#pcancel').classList.toggle('hide',!m.done);chips()}
+  $('#likes').value=m.likes||'';$('#note').value=m.note||'';$('#pcancel').classList.toggle('hide',!m.done);chips();loadEd(m.photo)}
 $('#pbtn').onclick=async()=>{$('#perr').textContent='';$('#pbtn').disabled=true;
-  try{await api('profile',{id:localStorage.dm_id,hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,traits:[...sel.traits],note:$('#note').value});
+  try{await api('profile',{id:localStorage.dm_id,photo:ed.dirty?$('#pedit').toDataURL('image/jpeg',.75):undefined,hobbies:[...sel.hobbies],likes:$('#likes').value,looking:sel.looking,traits:[...sel.traits],note:$('#note').value});
     editing=false;await refresh()}catch(e){$('#perr').textContent=e.message}$('#pbtn').disabled=false};
 $('#pcancel').onclick=()=>{editing=false;refresh()};
 $('#edit').onclick=()=>{editing=true;fill();show('profile')};
 
+// ---- photo editor (zoom + rotate, square crop)
+function drawEd(){const x=$('#pedit').getContext('2d');x.clearRect(0,0,240,240);if(!ed.img)return;
+  const w=ed.img.width,h=ed.img.height,k=240/Math.min(w,h)*ed.zoom;
+  x.save();x.translate(120,120);x.rotate(ed.rot*Math.PI/2);x.scale(k,k);x.drawImage(ed.img,-w/2,-h/2);x.restore()}
+function loadEd(src){ed={img:null,rot:0,zoom:1,dirty:false};$('#pzoom').value=1;
+  if(!src){drawEd();return}const i=new Image();i.onload=()=>{ed.img=i;drawEd()};i.src=src}
+$('#pfile').onchange=e=>{const f=e.target.files[0];if(!f)return;const i=new Image();
+  i.onload=()=>{ed={img:i,rot:0,zoom:1,dirty:true};$('#pzoom').value=1;drawEd()};
+  i.onerror=()=>{$('#perr').textContent='Could not read that image. Try another photo.'};i.src=URL.createObjectURL(f)};
+$('#pzoom').oninput=e=>{ed.zoom=+e.target.value;ed.dirty=true;drawEd()};
+$('#prot').onclick=()=>{ed.rot=(ed.rot+1)%4;ed.dirty=true;drawEd()};
+
 // ---- main page
 async function refresh(){try{data=await api('matches',null,'?id='+localStorage.dm_id);
+    {const n=data.requests.length;if(prevReq>=0&&n>prevReq)toast('💌 New dandiya request!');prevReq=n}
     if(!data.me.done&&!editing){editing=true;fill()}
     if(editing){show('profile');return}
     if(viewing)return;
     show('main');draw()}
-  catch(e){if(e.message==='Session expired'){localStorage.removeItem('dm_id');clearInterval(timer);editing=viewing=false;show('join')}}}
+  catch(e){if(e.message==='Session expired'){localStorage.removeItem('dm_id');clearInterval(timer);clearInterval(chatTimer);editing=viewing=false;show('join')}}}
 function card(p,extra,btn='',open=false){
   const tags=(p.hobbies||[]).slice(0,6).map(h=>`<span class="tag ${(p.common||[]).includes(h)?'hl':''}">${esc(h)}</span>`).join('');
   return `<div class="p" ${open?`data-open="${esc(p.id)}" style="cursor:pointer"`:''}>${p.photo?`<img src="${esc(p.photo)}">`:'<div class="ph"></div>'}<div><b>${esc(p.name)}</b>, ${esc(p.age)}<br>${extra}
@@ -141,14 +167,16 @@ function card(p,extra,btn='',open=false){
     ${(p.common||[]).length?`<div class="mu">⭐ ${p.common.length} hobb${p.common.length>1?'ies':'y'} in common</div>`:''}</div>${btn}</div>`}
 function draw(){const lo=+$('#minA').value||0,hi=+$('#maxA').value||200;
   $('#hi').textContent='Hi '+data.me.name+' 👋';
+  $('#rbox').classList.toggle('hide',!data.requests.length);
+  $('#reqs').innerHTML=data.requests.map(r=>card(r,'<b style="color:var(--or)">💌 wants to dandiya with you</b>',`<div style="display:flex;flex-direction:column;gap:6px"><button data-ok="${esc(r.id)}">Approve ✓</button><button class="s" data-no="${esc(r.id)}">Deny ✕</button></div>`)).join('');
   $('#mbox').classList.toggle('hide',!data.matches.length);
-  $('#matches').innerHTML=data.matches.map(m=>card(m,`📞 <a style="color:var(--or)" href="tel:${esc(m.phone)}">${esc(m.phone)}</a>`)).join('');
+  $('#matches').innerHTML=data.matches.map(m=>card(m,`<span class="dot ${m.online?'on':''}"></span><span class="mu">${m.online?'online':'offline'}</span>${m.unread?` · <b style="color:var(--or)">${m.unread} new</b>`:''}`,`<button data-chat="${esc(m.id)}">💬 Chat</button>`)).join('');
   const list=data.people.filter(p=>p.age>=lo&&p.age<=hi);lastList=list;
   $('#people').innerHTML=list.length?list.map(p=>card(p,`<span class="dot ${p.online?'on':''}"></span><span class="mu">${p.online?'online':'offline'}</span>`,
     `<button class="${p.liked?'s':''}" data-id="${esc(p.id)}" ${p.liked?'disabled':''}>${p.liked?'Liked':'Like'}</button>`,true)).join(''):'<p class="mu">No one here yet — share the link!</p>'}
 $('#people').onclick=async e=>{
   const lb=e.target.closest('button[data-id]');
-  if(lb){await api('like',{id:localStorage.dm_id,target:lb.dataset.id});refresh();return}
+  if(lb){try{const r=await api('like',{id:localStorage.dm_id,target:lb.dataset.id});toast(r.matched?'🎉 Matched! Open Chat from Your matches.':'Request sent 💌')}catch(x){toast(x.message)}refresh();return}
   const c=e.target.closest('[data-open]');if(!c)return;
   const i=lastList.findIndex(p=>p.id===c.dataset.open);if(i<0)return;
   view={list:lastList,i};viewing=true;show('view');openP();window.scrollTo(0,0)};
@@ -172,12 +200,33 @@ function nextP(){if(view.i<view.list.length-1){view.i++;openP();window.scrollTo(
 $('#vback').onclick=()=>{viewing=false;show('main');draw()};
 $('#vpass').onclick=nextP;
 $('#vlike').onclick=async()=>{const p=view.list[view.i];if(p.liked)return;$('#vlike').disabled=true;
-  try{await api('like',{id:localStorage.dm_id,target:p.id});p.liked=true;
+  try{const r=await api('like',{id:localStorage.dm_id,target:p.id});p.liked=true;
     data=await api('matches',null,'?id='+localStorage.dm_id);
-    if(data.matches.some(m=>m.id===p.id))toast("🎉 It's a dandiya match with "+p.name+"! See Mutual matches.");
+    toast(r.matched?"🎉 It's a match with "+p.name+"! Open Chat from Your matches.":'Request sent to '+p.name+' 💌');
     nextP()}catch(e){toast(e.message);$('#vlike').disabled=false}};
 $('#minA').oninput=$('#maxA').oninput=()=>data&&draw();
 function start(){show('');refresh();clearInterval(timer);timer=setInterval(refresh,15000)}
+
+// ---- requests + chat
+$('#reqs').onclick=async e=>{const ok=e.target.dataset.ok,no=e.target.dataset.no,t=ok||no;if(!t)return;
+  try{await api('respond',{id:localStorage.dm_id,from:t,accept:!!ok});toast(ok?'🎉 Matched! You can chat now.':'Request denied');await refresh()}catch(x){toast(x.message)}};
+$('#matches').onclick=e=>{const id=e.target.dataset.chat;if(id)openChat(id)};
+async function openChat(id){const m=data.matches.find(x=>x.id===id);if(!m)return;
+  chatWith=m;viewing=true;lastCount=-1;show('chat');$('#chead').textContent=m.name+', '+m.age;$('#cmsgs').innerHTML='';
+  await loadChat(true);clearInterval(chatTimer);chatTimer=setInterval(()=>loadChat(false),3000);window.scrollTo(0,0)}
+function closeChat(){clearInterval(chatTimer);chatWith=null;viewing=false;show('main');refresh()}
+async function loadChat(force){if(!chatWith)return;
+  try{const d=await api('chat',null,'?id='+localStorage.dm_id+'&with='+chatWith.id);
+    if(!force&&d.msgs.length===lastCount)return;lastCount=d.msgs.length;
+    const box=$('#cmsgs'),end=force||box.scrollHeight-box.scrollTop-box.clientHeight<60;
+    box.innerHTML=d.msgs.length?d.msgs.map(x=>`<div class="m ${x.f===localStorage.dm_id?'me':''}">${esc(x.t)}</div>`).join(''):'<p class="mu" style="text-align:center">Say hi 👋 and plan your dandiya night!</p>';
+    if(end)box.scrollTop=box.scrollHeight}
+  catch(e){if(/Not matched/.test(e.message)){closeChat();toast('This match is no longer available')}}}
+async function sendMsg(){const i=$('#cin'),t=i.value.trim();if(!t||!chatWith)return;i.value='';
+  try{await api('send',{id:localStorage.dm_id,to:chatWith.id,text:t});await loadChat(true)}catch(e){toast(e.message)}}
+$('#csend').onclick=sendMsg;$('#cin').onkeydown=e=>{if(e.key==='Enter')sendMsg()};$('#cback').onclick=closeChat;
+$('#cun').onclick=async()=>{if(!chatWith||!confirm('Unmatch '+chatWith.name+'? The chat will be deleted.'))return;
+  try{await api('unmatch',{id:localStorage.dm_id,with:chatWith.id});toast('Unmatched');closeChat()}catch(e){toast(e.message)}};
 
 // ---- admin (#admin)
 let apw='';
